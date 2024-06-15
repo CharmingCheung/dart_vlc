@@ -1,0 +1,29 @@
+PODS:
+  - dart_vlc (0.0.1):
+    - FlutterMacOS
+    - VLCKit (~> 3.3)
+  - FlutterMacOS (1.0.0)
+  - VLCKit (3.4.0)
+
+DEPENDENCIES:
+  - dart_vlc (from `Flutter/ephemeral/.symlinks/plugins/dart_vlc/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+
+SPEC REPOS:
+  trunk:
+    - VLCKit
+
+EXTERNAL SOURCES:
+  dart_vlc:
+    :path: Flutter/ephemeral/.symlinks/plugins/dart_vlc/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+
+SPEC CHECKSUMS:
+  dart_vlc: 3067a969f0abee3d2df3d8b0ca0a855cd78c2042
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  VLCKit: 961554c1befd749326a5b44e39db83a12276c2fc
+
+PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
+
+COCOAPODS: 1.15.2
