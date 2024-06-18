@@ -5,7 +5,7 @@ if(UNIX AND NOT APPLE)
   set(LINUX TRUE)
 endif()
 
-set(CMAKE_OSX_ARCHITECTURES "x86_64")
+set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
 
 set(LIBRARY_NAME dart_vlc_core)
 project(${LIBRARY_NAME} LANGUAGES C CXX)
