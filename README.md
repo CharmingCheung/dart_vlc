@@ -1,28 +1,9 @@
 <h1 align="center"><a href="https://github.com/alexmercerind/dart_vlc">dart_vlc</a></h1>
-<p align="center">Flutter audio / video playback, broadcast & recording library for Windows & Linux.</p>
+<p align="center">Flutter audio / video playback, broadcast & recording library for Windows & Linux e MacOS.</p>
 
 <br />
 
-<p align="center">
-  <strong>Sponsored with 💖 by</strong>
-  <br>
-  <a href="https://getstream.io/chat/sdk/flutter/?utm_source=alexmercerind_dart&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=alexmercerind_December2022_FlutterSDK_klmh22" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28951144/204903234-4a64b63c-2fc2-4eef-be44-d287d27021e5.svg">
-      <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28951144/204903022-bbaa49ca-74c2-4a8f-a05d-af8314bfd2cc.svg">
-      <img alt="Stream Chat" width="350" height="auto" src="https://user-images.githubusercontent.com/28951144/204903022-bbaa49ca-74c2-4a8f-a05d-af8314bfd2cc.svg">
-    </picture>
-  </a>
-  <br>
-    <h5 align="center">
-      Rapidly ship in-app messaging with Stream's highly reliable chat infrastructure and feature-rich SDKs, including Flutter!
-    </h5>
-  <h4 align="center">
-    <a href="https://getstream.io/chat/sdk/flutter/?utm_source=alexmercerind_dart&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=alexmercerind_December2022_FlutterSDK_klmh22" target="_blank">
-    Try the Flutter Chat tutorial
-    </a>
-  </h4>
-</p>
+
 
 <br />
 
@@ -31,32 +12,18 @@
 
 ## Installation
 
-_pub.dev_
-
-```yaml
-dependencies:
-  ...
-  dart_vlc: ^0.1.9
-```
-
 _GitHub_
 
 ```yaml
 dependencies:
   dart_vlc:
     git:
-      url: https://github.com/alexmercerind/dart_vlc.git
+      url: https://github.com/SpaceXM/dart_vlc.git
       ref: master
 
-dependency_overrides:
-  dart_vlc_ffi:
-    git:
-      url: https://github.com/alexmercerind/dart_vlc.git
-      ref: master
-      path: ffi
 ```
 
-Feel free to open a [new issue](https://github.com/alexmercerind/dart_vlc/issues) or [discussion](https://github.com/alexmercerind/dart_vlc/discussions), if you found a bug or need assistance.
+Feel free to open a [new issue](https://github.com/SpaceXM/dart_vlc/issues) or [discussion](https://github.com/SpaceXM/dart_vlc/discussions), if you found a bug or need assistance.
 
 ## Documentation
 
