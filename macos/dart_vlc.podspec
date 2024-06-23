@@ -20,7 +20,7 @@ A new flutter plugin project.
   }, {
     :name => 'Build common lib',
     :show_env_vars_in_log => true,
-    :script => 'cmake -Bcore_core ${PODS_TARGET_SRCROOT}/../core -DCMAKE_INSTALL_PREFIX:PATH=${PODS_TARGET_SRCROOT}/deps && pwd && make -C core_core install',
+    :script => '/opt/homebrew/bin/cmake -Bcore_core ${PODS_TARGET_SRCROOT}/../core -DCMAKE_INSTALL_PREFIX:PATH=${PODS_TARGET_SRCROOT}/deps && pwd && make -C core_core install',
     :execution_position => :before_compile
   }, {
     :name => 'Change VLCKit ID',
