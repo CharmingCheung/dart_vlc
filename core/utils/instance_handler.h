@@ -30,7 +30,7 @@ class InstanceHandler {
 
   void Create(int32_t id, std::unique_ptr<type> instance);
 
-  size_t Count();
+  int32_t Count();
 
   void Dispose(int32_t id);
 
@@ -56,7 +56,7 @@ void InstanceHandler<type>::Create(int32_t id, std::unique_ptr<type> instance) {
 }
 
 template <typename type>
-size_t InstanceHandler<type>::Count() {
+int32_t InstanceHandler<type>::Count() {
   std::lock_guard<std::mutex> lock(mutex_);
   return instances.size();
 }
