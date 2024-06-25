@@ -22,7 +22,7 @@ VideoOutlet::VideoOutlet(flutter::TextureRegistrar* texture_registrar)
     : texture_registrar_(texture_registrar) {
   texture_ =
       std::make_unique<flutter::TextureVariant>(flutter::PixelBufferTexture(
-          [=](int32_t width, int32_t height) -> const FlutterDesktopPixelBuffer* {
+          [=](size_t width, size_t height) -> const FlutterDesktopPixelBuffer* {
             const std::lock_guard<std::mutex> lock(mutex_);
             return &flutter_pixel_buffer_;
           }));
