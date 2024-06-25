@@ -35,112 +35,112 @@ struct DartDeviceList {
     explicit Device(const char* name, const char* id) : name(name), id(id) {}
   };
 
-  size_t size;
+  int32_t size;
   const Device* device_infos;
 };
 
 struct DartEqualizer {
-  size_t id;
+  int32_t id;
   float pre_amp;
   const float* bands;
   const float* amps;
-  size_t size;
+  int32_t size;
 };
 
-DLLEXPORT void PlayerCreate(size_t id, size_t video_width,
-                            size_t video_height,
-                            size_t command_line_argument_count,
+DLLEXPORT void PlayerCreate(int32_t id, int32_t video_width,
+                            int32_t video_height,
+                            int32_t command_line_argument_count,
                             const char** command_line_arguments);
-DLLEXPORT void PlayerDispose(size_t id);
+DLLEXPORT void PlayerDispose(int32_t id);
 
-DLLEXPORT void PlayerOpen(size_t id, bool auto_start, const char** source,
-                          size_t source_size);
+DLLEXPORT void PlayerOpen(int32_t id, bool auto_start, const char** source,
+                          int32_t source_size);
 
-DLLEXPORT void PlayerPlay(size_t id);
+DLLEXPORT void PlayerPlay(int32_t id);
 
-DLLEXPORT void PlayerPause(size_t id);
+DLLEXPORT void PlayerPause(int32_t id);
 
-DLLEXPORT void PlayerPlayOrPause(size_t id);
+DLLEXPORT void PlayerPlayOrPause(int32_t id);
 
-DLLEXPORT void PlayerStop(size_t id);
+DLLEXPORT void PlayerStop(int32_t id);
 
-DLLEXPORT void PlayerNext(size_t id);
+DLLEXPORT void PlayerNext(int32_t id);
 
-DLLEXPORT void PlayerPrevious(size_t id);
+DLLEXPORT void PlayerPrevious(int32_t id);
 
-DLLEXPORT void PlayerJumpToIndex(size_t id, size_t index);
+DLLEXPORT void PlayerJumpToIndex(int32_t id, int32_t index);
 
-DLLEXPORT void PlayerSeek(size_t id, size_t position);
+DLLEXPORT void PlayerSeek(int32_t id, int32_t position);
 
-DLLEXPORT void PlayerSetVolume(size_t id, float volume);
+DLLEXPORT void PlayerSetVolume(int32_t id, float volume);
 
-DLLEXPORT void PlayerSetRate(size_t id, float rate);
+DLLEXPORT void PlayerSetRate(int32_t id, float rate);
 
-DLLEXPORT void PlayerSetUserAgent(size_t id, const char* user_agent);
+DLLEXPORT void PlayerSetUserAgent(int32_t id, const char* user_agent);
 
-DLLEXPORT void PlayerSetDevice(size_t id, const char* device_id,
+DLLEXPORT void PlayerSetDevice(int32_t id, const char* device_id,
                                const char* device_name);
 
-DLLEXPORT void PlayerSetEqualizer(size_t id, size_t equalizer_id);
+DLLEXPORT void PlayerSetEqualizer(int32_t id, int32_t equalizer_id);
 
-DLLEXPORT void PlayerSetPlaylistMode(size_t id, const char* mode);
+DLLEXPORT void PlayerSetPlaylistMode(int32_t id, const char* mode);
 
-DLLEXPORT void PlayerAdd(size_t id, const char* type, const char* resource);
+DLLEXPORT void PlayerAdd(int32_t id, const char* type, const char* resource);
 
-DLLEXPORT void PlayerRemove(size_t id, size_t index);
+DLLEXPORT void PlayerRemove(int32_t id, int32_t index);
 
-DLLEXPORT void PlayerInsert(size_t id, size_t index, const char* type,
+DLLEXPORT void PlayerInsert(int32_t id, int32_t index, const char* type,
                             const char* resource);
 
-DLLEXPORT void PlayerMove(size_t id, size_t initial_index,
-                          size_t final_index);
+DLLEXPORT void PlayerMove(int32_t id, int32_t initial_index,
+                          int32_t final_index);
 
-DLLEXPORT void PlayerTakeSnapshot(size_t id, const char* file_path,
-                                  size_t width, size_t height);
+DLLEXPORT void PlayerTakeSnapshot(int32_t id, const char* file_path,
+                                  int32_t width, int32_t height);
 
-DLLEXPORT void PlayerSetAudioTrack(size_t id, size_t track);
+DLLEXPORT void PlayerSetAudioTrack(int32_t id, int32_t track);
 
-DLLEXPORT size_t PlayerGetAudioTrackCount(size_t id);
+DLLEXPORT int32_t PlayerGetAudioTrackCount(int32_t id);
 
-DLLEXPORT void PlayerSetHWND(size_t id, int64_t hwnd);
+DLLEXPORT void PlayerSetHWND(int32_t id, int64_t hwnd);
 
 DLLEXPORT const char** MediaParse(Dart_Handle object, const char* type,
-                                  const char* resource, size_t timeout);
+                                  const char* resource, int32_t timeout);
 
-DLLEXPORT void BroadcastCreate(size_t id, const char* type,
+DLLEXPORT void BroadcastCreate(int32_t id, const char* type,
                                const char* resource, const char* access,
                                const char* mux, const char* dst,
-                               const char* vcodec, size_t vb,
-                               const char* acodec, size_t ab);
+                               const char* vcodec, int32_t vb,
+                               const char* acodec, int32_t ab);
 
-DLLEXPORT void BroadcastStart(size_t id);
+DLLEXPORT void BroadcastStart(int32_t id);
 
-DLLEXPORT void BroadcastDispose(size_t id);
+DLLEXPORT void BroadcastDispose(int32_t id);
 
-DLLEXPORT void ChromecastCreate(size_t id, const char* type,
+DLLEXPORT void ChromecastCreate(int32_t id, const char* type,
                                 const char* resource, const char* ip_address);
 
-DLLEXPORT void ChromecastStart(size_t id);
+DLLEXPORT void ChromecastStart(int32_t id);
 
-DLLEXPORT void ChromecastDispose(size_t id);
+DLLEXPORT void ChromecastDispose(int32_t id);
 
-DLLEXPORT void RecordCreate(size_t id, const char* saving_file,
+DLLEXPORT void RecordCreate(int32_t id, const char* saving_file,
                             const char* type, const char* resource);
 
-DLLEXPORT void RecordStart(size_t id);
+DLLEXPORT void RecordStart(int32_t id);
 
-DLLEXPORT void RecordDispose(size_t id);
+DLLEXPORT void RecordDispose(int32_t id);
 
 DLLEXPORT DartDeviceList* DevicesAll(Dart_Handle object);
 
 DLLEXPORT struct DartEqualizer* EqualizerCreateEmpty(Dart_Handle object);
 
 DLLEXPORT struct DartEqualizer* EqualizerCreateMode(Dart_Handle object,
-                                                    size_t mode);
+                                                    int32_t mode);
 
-DLLEXPORT void EqualizerSetBandAmp(size_t id, float band, float amp);
+DLLEXPORT void EqualizerSetBandAmp(int32_t id, float band, float amp);
 
-DLLEXPORT void EqualizerSetPreAmp(size_t id, float amp);
+DLLEXPORT void EqualizerSetPreAmp(int32_t id, float amp);
 
 #ifdef __cplusplus
 }

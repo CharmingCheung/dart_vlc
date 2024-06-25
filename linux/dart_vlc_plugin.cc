@@ -36,7 +36,7 @@ struct _DartVlcPlugin {
   FlTextureRegistrar* texture_registrar;
 };
 
-std::unordered_map<size_t, VideoOutlet*> g_video_outlets;
+std::unordered_map<int32_t, VideoOutlet*> g_video_outlets;
 
 G_DEFINE_TYPE(DartVlcPlugin, dart_vlc_plugin, g_object_get_type())
 
@@ -46,7 +46,7 @@ static void dart_vlc_plugin_handle_method_call(DartVlcPlugin* self,
   const gchar* method_name = fl_method_call_get_name(method_call);
   if (strcmp(method_name, "PlayerRegisterTexture") == 0) {
     auto arguments = fl_method_call_get_args(method_call);
-    size_t player_id =
+    int32_t player_id =
         fl_value_get_int(fl_value_lookup_string(arguments, "playerId"));
     auto [it, added] = g_video_outlets.try_emplace(player_id, nullptr);
     if (added) {
@@ -64,7 +64,7 @@ static void dart_vlc_plugin_handle_method_call(DartVlcPlugin* self,
           [texture_registrar = self->texture_registrar,
            video_outlet_ptr = it->second,
            video_outlet_private = video_outlet_private](
-              uint8_t* frame, size_t width, size_t height) -> void {
+              uint8_t* frame, int32_t width, int32_t height) -> void {
             video_outlet_private->buffer = frame;
             video_outlet_private->video_width = width;
             video_outlet_private->video_height = height;
@@ -78,7 +78,7 @@ static void dart_vlc_plugin_handle_method_call(DartVlcPlugin* self,
 
   } else if (strcmp(method_name, "PlayerUnregisterTexture") == 0) {
     auto arguments = fl_method_call_get_args(method_call);
-    size_t player_id =
+    int32_t player_id =
         fl_value_get_int(fl_value_lookup_string(arguments, "playerId"));
     if (g_video_outlets.find(player_id) == g_video_outlets.end()) {
       response = FL_METHOD_RESPONSE(fl_method_error_response_new(

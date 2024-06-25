@@ -26,21 +26,21 @@
 template <typename type>
 class InstanceHandler {
  public:
-  type* Get(size_t id);
+  type* Get(int32_t id);
 
-  void Create(size_t id, std::unique_ptr<type> instance);
+  void Create(int32_t id, std::unique_ptr<type> instance);
 
   size_t Count();
 
-  void Dispose(size_t id);
+  void Dispose(int32_t id);
 
  private:
   std::mutex mutex_;
-  std::unordered_map<size_t, std::unique_ptr<type>> instances;
+  std::unordered_map<int32_t, std::unique_ptr<type>> instances;
 };
 
 template <typename type>
-type* InstanceHandler<type>::Get(size_t id) {
+type* InstanceHandler<type>::Get(int32_t id) {
   std::lock_guard<std::mutex> lock(mutex_);
   auto it = instances.find(id);
   if (it == instances.end()) {
@@ -50,7 +50,7 @@ type* InstanceHandler<type>::Get(size_t id) {
 }
 
 template <typename type>
-void InstanceHandler<type>::Create(size_t id, std::unique_ptr<type> instance) {
+void InstanceHandler<type>::Create(int32_t id, std::unique_ptr<type> instance) {
   std::lock_guard<std::mutex> lock(mutex_);
   instances.insert(std::make_pair(id, std::move(instance)));
 }
@@ -62,7 +62,7 @@ size_t InstanceHandler<type>::Count() {
 }
 
 template <typename type>
-void InstanceHandler<type>::Dispose(size_t id) {
+void InstanceHandler<type>::Dispose(int32_t id) {
   std::lock_guard<std::mutex> lock(mutex_);
   instances.erase(id);
 }

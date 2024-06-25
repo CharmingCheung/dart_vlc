@@ -27,7 +27,7 @@
 
 std::shared_ptr<Media> Media::Create(std::string_view type,
                                      const std::string& url, bool parse,
-                                     size_t timeout) {
+                                     int32_t timeout) {
   if (type.compare(kMediaTypeFile) == 0) {
     return std::shared_ptr<Media>(Media::File(url, parse, timeout));
   } else if (type.compare(kMediaTypeNetwork) == 0) {
@@ -38,7 +38,7 @@ std::shared_ptr<Media> Media::Create(std::string_view type,
 }
 
 std::shared_ptr<Media> Media::File(std::string path, bool parse,
-                                   size_t timeout, std::string start_time,
+                                   int32_t timeout, std::string start_time,
                                    std::string stop_time) {
   std::shared_ptr<Media> media = std::make_shared<Media>();
   media->resource_ = path;
@@ -53,7 +53,7 @@ std::shared_ptr<Media> Media::File(std::string path, bool parse,
 }
 
 std::shared_ptr<Media> Media::Network(std::string url, bool parse,
-                                      size_t timeout, std::string start_time,
+                                      int32_t timeout, std::string start_time,
                                       std::string stop_time) {
   std::shared_ptr<Media> media = std::make_shared<Media>();
   media->resource_ = url;
@@ -75,7 +75,7 @@ std::shared_ptr<Media> Media::DirectShow(std::string resource) {
   return media;
 }
 
-void Media::Parse(size_t timeout) {
+void Media::Parse(int32_t timeout) {
   VLC::Instance vlc_instance = VLC::Instance(0, nullptr);
   VLC::Media media =
       VLC::Media(vlc_instance, location_, VLC::Media::FromLocation);

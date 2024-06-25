@@ -30,7 +30,7 @@ Player::Player(const std::vector<std::string>& cmd_arguments) {
     for (auto i = 0; i < cmd_arguments.size(); i++) {
       c_array[i] = cmd_arguments[i].c_str();
     }
-    vlc_instance_ = VLC::Instance(static_cast<size_t>(cmd_arguments.size()),
+    vlc_instance_ = VLC::Instance(static_cast<int32_t>(cmd_arguments.size()),
                                   c_array.get());
   }
   vlc_media_player_ = VLC::MediaPlayer(vlc_instance_);
@@ -131,16 +131,16 @@ void Player::Previous() {
   }
 }
 
-void Player::JumpToIndex(size_t index) {
+void Player::JumpToIndex(int32_t index) {
   OnPlaylistCallback();
   if (index >= 0 && index < vlc_media_list_.count())
     vlc_media_list_player_.playItemAtIndex(index);
 }
 
-void Player::Seek(size_t position) { vlc_media_player_.setTime(position); }
+void Player::Seek(int32_t position) { vlc_media_player_.setTime(position); }
 
 void Player::SetVolume(float volume) {
-  vlc_media_player_.setVolume(static_cast<size_t>(volume * 100));
+  vlc_media_player_.setVolume(static_cast<int32_t>(volume * 100));
   state_->set_volume(volume);
   volume_callback_(volume);
 }
@@ -180,7 +180,7 @@ void Player::Add(std::shared_ptr<Media> media) {
   state_->set_is_playlist(true);
 }
 
-void Player::Remove(size_t index) {
+void Player::Remove(int32_t index) {
   if (index < 0 || index >= state_->medias()->medias().size()) return;
   is_playlist_modified_ = true;
   state_->medias()->medias().erase(state_->medias()->medias().begin() + index);
@@ -199,7 +199,7 @@ void Player::Remove(size_t index) {
   state_->set_is_playlist(true);
 }
 
-void Player::Insert(size_t index, std::shared_ptr<Media> media) {
+void Player::Insert(int32_t index, std::shared_ptr<Media> media) {
   if (index < 0 || index >= state_->medias()->medias().size()) return;
   is_playlist_modified_ = true;
   VLC::Media vlc_media =
@@ -214,7 +214,7 @@ void Player::Insert(size_t index, std::shared_ptr<Media> media) {
   state_->set_is_playlist(true);
 }
 
-void Player::Move(size_t from, size_t to) {
+void Player::Move(int32_t from, int32_t to) {
   if (from < 0 || from >= state_->medias()->medias().size() || to < 0 ||
       to >= state_->medias()->medias().size())
     return;
@@ -247,22 +247,22 @@ void Player::Move(size_t from, size_t to) {
   OnPlaylistCallback();
 }
 
-void Player::TakeSnapshot(std::string file_path, size_t width,
-                          size_t height) {
+void Player::TakeSnapshot(std::string file_path, int32_t width,
+                          int32_t height) {
   vlc_media_player_.takeSnapshot(0, file_path, width, height);
 }
 
-void Player::SetVideoWidth(size_t width) { preferred_video_width_ = width; }
+void Player::SetVideoWidth(int32_t width) { preferred_video_width_ = width; }
 
-void Player::SetVideoHeight(size_t height) {
+void Player::SetVideoHeight(int32_t height) {
   preferred_video_height_ = height;
 }
 
-void Player::SetAudioTrack(size_t track) {
+void Player::SetAudioTrack(int32_t track) {
   vlc_media_player_.setAudioTrack(track);
 }
 
-size_t Player::GetAudioTrackCount() {
+int32_t Player::GetAudioTrackCount() {
   return vlc_media_player_.audioTrackCount();
 }
 
@@ -283,21 +283,21 @@ void Player::SetPlayCallback(std::function<void()> callback) {
 }
 
 void Player::SetVideoDimensionsCallback(
-    std::function<void(size_t, size_t)> callback) {
+    std::function<void(int32_t, int32_t)> callback) {
   video_dimension_callback_ = callback;
   vlc_media_player_.setVideoCallbacks(
       std::bind(&Player::OnVideoLockCallback, this, std::placeholders::_1),
       nullptr,
       std::bind(&Player::OnVideoPictureCallback, this, std::placeholders::_1));
   vlc_media_player_.setVideoFormatCallbacks(
-      [=](char* chroma, usize_t* w, usize_t* h, usize_t* p,
-          usize_t* l) -> size_t {
-        size_t video_width = video_width_, video_height = video_height_,
+      [=](char* chroma, uint32_t* w, uint32_t* h, uint32_t* p,
+          uint32_t* l) -> int32_t {
+        int32_t video_width = video_width_, video_height = video_height_,
                 pitch = video_width_ * 4;
-        if (video_height_ != static_cast<size_t>(*h) ||
-            video_width_ != static_cast<size_t>(*w)) {
-          video_height_ = static_cast<size_t>(*h);
-          video_width_ = static_cast<size_t>(*w);
+        if (video_height_ != static_cast<int32_t>(*h) ||
+            video_width_ != static_cast<int32_t>(*w)) {
+          video_height_ = static_cast<int32_t>(*h);
+          video_width_ = static_cast<int32_t>(*w);
           video_dimension_callback_(video_width_, video_height_);
           if (preferred_video_width_.has_value() &&
               preferred_video_height_.has_value()) {
@@ -350,7 +350,7 @@ void Player::SetStopCallback(std::function<void()> callback) {
       std::bind(&Player::OnStopCallback, this));
 }
 
-void Player::SetPositionCallback(std::function<void(size_t)> callback) {
+void Player::SetPositionCallback(std::function<void(int32_t)> callback) {
   position_callback_ = callback;
   vlc_media_player_.eventManager().onPositionChanged(
       std::bind(&Player::OnPositionCallback, this, std::placeholders::_1));
@@ -385,7 +385,7 @@ void Player::SetBufferingCallback(std::function<void(float)> callback) {
 }
 
 void Player::SetVideoFrameCallback(
-    std::function<void(uint8_t*, size_t, size_t)> callback) {
+    std::function<void(uint8_t*, int32_t, int32_t)> callback) {
   video_callback_ = callback;
 }
 
@@ -464,7 +464,7 @@ void Player::OnPositionCallback(float relative_position) {
     state_->set_duration(duration());
   }
   position_callback_(
-      static_cast<size_t>(relative_position * vlc_media_player_.length()));
+      static_cast<int32_t>(relative_position * vlc_media_player_.length()));
 }
 
 void Player::OnSeekableCallback(bool is_seekable) {

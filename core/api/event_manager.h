@@ -40,7 +40,7 @@ DLLEXPORT void InitializeDartApi(Dart_PostCObjectType dart_post_C_object,
   Dart_InitializeApiDL(data);
 }
 
-inline void OnPlayPauseStop(size_t id, PlayerState* state) {
+inline void OnPlayPauseStop(int32_t id, PlayerState* state) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -67,7 +67,7 @@ inline void OnPlayPauseStop(size_t id, PlayerState* state) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnPosition(size_t id, PlayerState* state) {
+inline void OnPosition(int32_t id, PlayerState* state) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -98,7 +98,7 @@ inline void OnPosition(size_t id, PlayerState* state) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnComplete(size_t id, PlayerState* state) {
+inline void OnComplete(int32_t id, PlayerState* state) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -121,7 +121,7 @@ inline void OnComplete(size_t id, PlayerState* state) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnVolume(size_t id, PlayerState* state) {
+inline void OnVolume(int32_t id, PlayerState* state) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -143,7 +143,7 @@ inline void OnVolume(size_t id, PlayerState* state) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnRate(size_t id, PlayerState* state) {
+inline void OnRate(int32_t id, PlayerState* state) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -165,7 +165,7 @@ inline void OnRate(size_t id, PlayerState* state) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnOpen(size_t id, PlayerState* state) {
+inline void OnOpen(int32_t id, PlayerState* state) {
   const auto& media_items = state->medias()->medias();
 
   Dart_CObject id_object;
@@ -190,7 +190,7 @@ inline void OnOpen(size_t id, PlayerState* state) {
       std::unique_ptr<Dart_CObject*[]>(new Dart_CObject*[media_items.size()]);
   std::vector<std::string> types_str(media_items.size());
   std::vector<const char*> types_ptr(media_items.size());
-  for (size_t i = 0; i < media_items.size(); i++) {
+  for (int32_t i = 0; i < media_items.size(); i++) {
     types_str[i] = media_items[i]->media_type();
     types_ptr[i] = types_str[i].c_str();
     Dart_CObject* value_object = &types_objects[i];
@@ -209,7 +209,7 @@ inline void OnOpen(size_t id, PlayerState* state) {
       std::unique_ptr<Dart_CObject*[]>(new Dart_CObject*[media_items.size()]);
   std::vector<std::string> resources_str(media_items.size());
   std::vector<const char*> resources_ptr(media_items.size());
-  for (size_t i = 0; i < media_items.size(); i++) {
+  for (int32_t i = 0; i < media_items.size(); i++) {
     resources_str[i] = media_items[i]->resource();
     resources_ptr[i] = resources_str[i].c_str();
     Dart_CObject* value_object = &resources_objects[i];
@@ -233,8 +233,8 @@ inline void OnOpen(size_t id, PlayerState* state) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnVideoDimensions(size_t id, size_t video_width,
-                              size_t video_height) {
+inline void OnVideoDimensions(int32_t id, int32_t video_width,
+                              int32_t video_height) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -261,7 +261,7 @@ inline void OnVideoDimensions(size_t id, size_t video_width,
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnVideoFrame(size_t id, int size, uint8_t* frame) {
+inline void OnVideoFrame(int32_t id, int size, uint8_t* frame) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -285,7 +285,7 @@ inline void OnVideoFrame(size_t id, int size, uint8_t* frame) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnBuffering(size_t id, float buffering) {
+inline void OnBuffering(int32_t id, float buffering) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;
@@ -307,7 +307,7 @@ inline void OnBuffering(size_t id, float buffering) {
   g_dart_post_C_object(g_callback_port, &return_object);
 }
 
-inline void OnError(size_t id, const char* error) {
+inline void OnError(int32_t id, const char* error) {
   Dart_CObject id_object;
   id_object.type = Dart_CObject_kInt32;
   id_object.value.as_int32 = id;

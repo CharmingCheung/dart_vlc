@@ -35,7 +35,7 @@
 
     _textureId = [textureRegistry registerTexture:self];
 
-    player->SetVideoFrameCallback([self](uint8_t* frame, size_t width, size_t height) {
+    player->SetVideoFrameCallback([self](uint8_t* frame, int32_t width, int32_t height) {
       [self onFrame:frame width:width height:height];
     });
   }

@@ -31,8 +31,8 @@ struct _VideoOutletClass {
 struct VideoOutletPrivate {
   int64_t texture_id = 0;
   uint8_t* buffer = nullptr;
-  size_t video_width = 0;
-  size_t video_height = 0;
+  int32_t video_width = 0;
+  int32_t video_height = 0;
 };
 
 G_DECLARE_DERIVABLE_TYPE(VideoOutlet, video_outlet, DART_VLC, VIDEO_OUTLET,
@@ -44,7 +44,7 @@ G_DEFINE_TYPE_WITH_CODE(VideoOutlet, video_outlet,
 
 static gboolean video_outlet_copy_pixels(FlPixelBufferTexture* texture,
                                          const uint8_t** out_buffer,
-                                         usize_t* width, usize_t* height,
+                                         uint32_t* width, uint32_t* height,
                                          GError** error) {
   auto video_outlet_private =
       (VideoOutletPrivate*)video_outlet_get_instance_private(

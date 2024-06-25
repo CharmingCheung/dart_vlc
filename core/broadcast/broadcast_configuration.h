@@ -25,8 +25,8 @@
 class BroadcastConfiguration {
  public:
   BroadcastConfiguration(std::string access, std::string mux, std::string dst,
-                         std::string vcodec, size_t vb, std::string acodec,
-                         size_t ab)
+                         std::string vcodec, int32_t vb, std::string acodec,
+                         int32_t ab)
       : access_(access),
         mux_(mux),
         dst_(dst),
@@ -40,8 +40,8 @@ class BroadcastConfiguration {
   const std::string& dst() const { return dst_; }
   const std::string& vcodec() const { return vcodec_; }
   const std::string& acodec() const { return acodec_; }
-  size_t vb() const { return vb_; }
-  size_t ab() const { return ab_; }
+  int32_t vb() const { return vb_; }
+  int32_t ab() const { return ab_; }
 
  private:
   const std::string access_;
@@ -49,8 +49,8 @@ class BroadcastConfiguration {
   const std::string dst_;
   const std::string vcodec_;
   const std::string acodec_;
-  size_t vb_;
-  size_t ab_;
+  int32_t vb_;
+  int32_t ab_;
 };
 
 #endif  // BROADCAST_BROADCAST_CONFIGURATION_H_
