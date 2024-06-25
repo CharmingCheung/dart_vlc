@@ -23,14 +23,14 @@
 
 Equalizer::Equalizer() {
   vlc_equalizer_ = std::make_unique<VLC::Equalizer>();
-  for (uint32_t index = 0; index < vlc_equalizer_->bandCount(); index++)
+  for (usize_t index = 0; index < vlc_equalizer_->bandCount(); index++)
     bands_[vlc_equalizer_->bandFrequency(index)] = index;
   Refresh();
 }
 
 Equalizer::Equalizer(EqualizerMode mode) {
-  vlc_equalizer_ = std::make_unique<VLC::Equalizer>(static_cast<int32_t>(mode));
-  for (uint32_t index = 0; index < vlc_equalizer_->bandCount(); index++)
+  vlc_equalizer_ = std::make_unique<VLC::Equalizer>(static_cast<size_t>(mode));
+  for (usize_t index = 0; index < vlc_equalizer_->bandCount(); index++)
     bands_[vlc_equalizer_->bandFrequency(index)] = index;
   Refresh();
 }
@@ -46,7 +46,7 @@ void Equalizer::SetPreAmp(float amp) {
 }
 
 void Equalizer::Refresh() {
-  for (uint32_t index = 0; index < vlc_equalizer_->bandCount(); index++)
+  for (usize_t index = 0; index < vlc_equalizer_->bandCount(); index++)
     band_amps_[vlc_equalizer_->bandFrequency(index)] =
         vlc_equalizer_->amp(index);
   pre_amp_ = vlc_equalizer_->preamp();

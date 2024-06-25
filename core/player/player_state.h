@@ -27,20 +27,20 @@
 
 class PlayerState {
  public:
-  int32_t index() const { return index_; };
+  size_t index() const { return index_; };
   Playlist* medias() const { return medias_.get(); };
   bool is_playing() const { return is_playing_; };
   bool is_valid() const { return is_valid_; };
   bool is_seekable() const { return is_seekable_; };
   bool is_completed() const { return is_completed_; };
-  int32_t position() const { return position_; };
-  int32_t duration() const { return duration_; };
+  size_t position() const { return position_; };
+  size_t duration() const { return duration_; };
   float volume() const { return volume_; }
   float rate() const { return rate_; }
   bool is_playlist() const { return is_playlist_; };
   bool is_started() const { return is_started_; };
 
-  void set_index(int32_t value) { index_ = value; };
+  void set_index(size_t value) { index_ = value; };
   void set_medias(std::unique_ptr<Playlist> value) {
     medias_.reset(value.release());
   };
@@ -48,8 +48,8 @@ class PlayerState {
   void set_is_valid(bool value) { is_valid_ = value; };
   void set_is_seekable(bool value) { is_seekable_ = value; };
   void set_is_completed(bool value) { is_completed_ = value; };
-  void set_position(int32_t value) { position_ = value; };
-  void set_duration(int32_t value) { duration_ = value; };
+  void set_position(size_t value) { position_ = value; };
+  void set_duration(size_t value) { duration_ = value; };
   void set_volume(float value) { volume_ = value; }
   void set_rate(float value) { rate_ = value; }
   void set_is_playlist(bool value) { is_playlist_ = value; };
@@ -58,15 +58,15 @@ class PlayerState {
   void Reset();
 
  private:
-  int32_t index_ = 0;
+  size_t index_ = 0;
   std::unique_ptr<Playlist> medias_ =
       std::make_unique<Playlist>(std::vector<std::shared_ptr<Media>>{});
   bool is_playing_ = false;
   bool is_valid_ = true;
   bool is_seekable_ = true;
   bool is_completed_ = false;
-  int32_t position_ = 0;
-  int32_t duration_ = 0;
+  size_t position_ = 0;
+  size_t duration_ = 0;
   float volume_ = 1.0;
   float rate_ = 1.0;
   bool is_playlist_ = false;

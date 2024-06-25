@@ -31,7 +31,7 @@ class VideoOutlet {
 
   int64_t texture_id() const { return texture_id_; }
 
-  void MarkVideoFrameAvailable(uint8_t* buffer, int32_t width, int32_t height);
+  void MarkVideoFrameAvailable(uint8_t* buffer, size_t width, size_t height);
 
   ~VideoOutlet();
 

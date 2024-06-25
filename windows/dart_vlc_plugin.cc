@@ -83,15 +83,15 @@ void DartVlcPlugin::HandleMethodCall(
   if (method_call.method_name() == "PlayerRegisterTexture") {
     flutter::EncodableMap arguments =
         std::get<flutter::EncodableMap>(*method_call.arguments());
-    int32_t player_id =
+    size_t player_id =
         std::get<int>(arguments[flutter::EncodableValue("playerId")]);
     auto [it, added] = outlets_.try_emplace(player_id, nullptr);
     if (added) {
       it->second = std::make_unique<VideoOutlet>(texture_registrar_);
       auto player = g_players->Get(player_id);
       player->SetVideoFrameCallback(
-          [outlet_ptr = it->second.get()](uint8_t* frame, int32_t width,
-                                          int32_t height) -> void {
+          [outlet_ptr = it->second.get()](uint8_t* frame, size_t width,
+                                          size_t height) -> void {
             outlet_ptr->MarkVideoFrameAvailable(frame, width, height);
           });
     }

@@ -30,18 +30,18 @@ class Player {
   static constexpr auto kFrameBufferSize = 67108864;
 
  public:
-  int32_t video_width() const { return video_width_; }
-  int32_t video_height() const { return video_height_; }
+  size_t video_width() const { return video_width_; }
+  size_t video_height() const { return video_height_; }
   PlayerState* state() const { return state_.get(); }
-  int32_t duration() {
-    return static_cast<int32_t>(vlc_media_player_.length());
+  size_t duration() {
+    return static_cast<size_t>(vlc_media_player_.length());
   }
-  int32_t position() { return static_cast<int32_t>(vlc_media_player_.time()); }
+  size_t position() { return static_cast<size_t>(vlc_media_player_.time()); }
   float volume() { return vlc_media_player_.volume() / 100.0f; }
   float rate() { return vlc_media_player_.rate(); }
   bool is_playing() { return vlc_media_player_.isPlaying(); }
   bool is_paused() { return !vlc_media_player_.isPlaying(); }
-  int32_t audio_track_count() { return vlc_media_player_.audioTrackCount(); }
+  size_t audio_track_count() { return vlc_media_player_.audioTrackCount(); }
 
   // Public API.
 
@@ -61,9 +61,9 @@ class Player {
 
   void Previous();
 
-  void JumpToIndex(int32_t index);
+  void JumpToIndex(size_t index);
 
-  void Seek(int32_t position);
+  void Seek(size_t position);
 
   void SetVolume(float volume);
 
@@ -79,21 +79,21 @@ class Player {
 
   void Add(std::shared_ptr<Media> media);
 
-  void Remove(int32_t index);
+  void Remove(size_t index);
 
-  void Insert(int32_t index, std::shared_ptr<Media> media);
+  void Insert(size_t index, std::shared_ptr<Media> media);
 
-  void Move(int32_t from, int32_t to);
+  void Move(size_t from, size_t to);
 
-  void TakeSnapshot(std::string file_path, int32_t width, int32_t height);
+  void TakeSnapshot(std::string file_path, size_t width, size_t height);
 
-  void SetVideoWidth(int32_t width);
+  void SetVideoWidth(size_t width);
 
-  void SetVideoHeight(int32_t height);
+  void SetVideoHeight(size_t height);
 
-  void SetAudioTrack(int32_t track);
+  void SetAudioTrack(size_t track);
 
-  int32_t GetAudioTrackCount();
+  size_t GetAudioTrackCount();
 
   void SetHWND(int64_t hwnd);
 
@@ -105,13 +105,13 @@ class Player {
   void SetPlayCallback(std::function<void()> callback);
 
   void SetVideoDimensionsCallback(
-      std::function<void(int32_t, int32_t)> callback);
+      std::function<void(size_t, size_t)> callback);
 
   void SetPauseCallback(std::function<void()> callback);
 
   void SetStopCallback(std::function<void()> callback);
 
-  void SetPositionCallback(std::function<void(int32_t)> callback);
+  void SetPositionCallback(std::function<void(size_t)> callback);
 
   void SetSeekableCallback(std::function<void(bool)> callback);
 
@@ -126,7 +126,7 @@ class Player {
   void SetBufferingCallback(std::function<void(float)> callback);
 
   void SetVideoFrameCallback(
-      std::function<void(uint8_t*, int32_t, int32_t)> callback);
+      std::function<void(uint8_t*, size_t, size_t)> callback);
 
   void SetErrorCallback(std::function<void(std::string)> callback);
 
@@ -163,10 +163,10 @@ class Player {
   std::unique_ptr<PlayerState> state_ = std::make_unique<PlayerState>();
   std::unique_ptr<uint8_t[]> video_frame_buffer_ =
       std::make_unique<uint8_t[]>(kFrameBufferSize);
-  int32_t video_width_ = -1;
-  int32_t video_height_ = -1;
-  std::optional<int32_t> preferred_video_width_ = std::nullopt;
-  std::optional<int32_t> preferred_video_height_ = std::nullopt;
+  size_t video_width_ = -1;
+  size_t video_height_ = -1;
+  std::optional<size_t> preferred_video_width_ = std::nullopt;
+  std::optional<size_t> preferred_video_height_ = std::nullopt;
   bool is_playlist_modified_ = false;
 
   // lambda callbacks that are registered by client code & get called when
@@ -174,16 +174,16 @@ class Player {
 
   std::function<void()> playlist_callback_ = nullptr;
   std::function<void(VLC::Media)> open_callback_ = nullptr;
-  std::function<void(int32_t, int32_t)> video_dimension_callback_ = nullptr;
+  std::function<void(size_t, size_t)> video_dimension_callback_ = nullptr;
   std::function<void()> play_callback_ = nullptr;
   std::function<void()> pause_callback_ = nullptr;
   std::function<void()> stop_callback_ = nullptr;
-  std::function<void(int32_t)> position_callback_ = nullptr;
+  std::function<void(size_t)> position_callback_ = nullptr;
   std::function<void(bool)> seekable_callback_ = nullptr;
   std::function<void()> complete_callback_ = nullptr;
   std::function<void(float)> volume_callback_ = nullptr;
   std::function<void(float)> rate_callback_ = nullptr;
-  std::function<void(uint8_t*, int32_t, int32_t)> video_callback_ = nullptr;
+  std::function<void(uint8_t*, size_t, size_t)> video_callback_ = nullptr;
 };
 
 #endif  // PLAYER_PLAYER_H_

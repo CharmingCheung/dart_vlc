@@ -40,21 +40,21 @@ class Media : public MediaSource {
   static std::shared_ptr<Media> Create(std::string_view type,
                                        const std::string& url,
                                        bool parse = false,
-                                       int32_t timeout = 10000);
+                                       size_t timeout = 10000);
 
   static std::shared_ptr<Media> File(std::string path, bool parse = false,
-                                     int32_t timeout = 10000,
+                                     size_t timeout = 10000,
                                      std::string start_time = "",
                                      std::string stop_time = "");
 
   static std::shared_ptr<Media> Network(std::string url, bool parse = false,
-                                        int32_t timeout = 10000,
+                                        size_t timeout = 10000,
                                         std::string start_time = "",
                                         std::string stop_time = "");
 
   static std::shared_ptr<Media> DirectShow(std::string resource);
 
-  void Parse(int32_t timeout);
+  void Parse(size_t timeout);
 
   std::string Type();
 

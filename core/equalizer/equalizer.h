@@ -63,7 +63,7 @@ class Equalizer {
   float pre_amp_ = 0.0f;
   std::map<float, float> band_amps_ = {};
   std::unique_ptr<VLC::Equalizer> vlc_equalizer_;
-  std::map<float, int32_t> bands_ = {};
+  std::map<float, size_t> bands_ = {};
 };
 
 #endif
