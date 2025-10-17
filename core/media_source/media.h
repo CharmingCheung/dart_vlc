@@ -35,6 +35,7 @@ class Media : public MediaSource {
   std::string& location() { return location_; };
   std::string& start_time() { return start_time_; };
   std::string& stop_time() { return stop_time_; };
+  std::string& clearkey() { return clearkey_; };
   std::map<std::string, std::string>& metas() { return metas_; };
 
   static std::shared_ptr<Media> Create(std::string_view type,
@@ -45,12 +46,14 @@ class Media : public MediaSource {
   static std::shared_ptr<Media> File(std::string path, bool parse = false,
                                      int32_t timeout = 10000,
                                      std::string start_time = "",
-                                     std::string stop_time = "");
+                                     std::string stop_time = "",
+                                     std::string clearkey = "");
 
   static std::shared_ptr<Media> Network(std::string url, bool parse = false,
                                         int32_t timeout = 10000,
                                         std::string start_time = "",
-                                        std::string stop_time = "");
+                                        std::string stop_time = "",
+                                        std::string clearkey = "");
 
   static std::shared_ptr<Media> DirectShow(std::string resource);
 
@@ -64,6 +67,7 @@ class Media : public MediaSource {
   std::string location_ = "";
   std::string start_time_ = "";
   std::string stop_time_ = "";
+  std::string clearkey_ = "";
   std::map<std::string, std::string> metas_ = {};
 };
 

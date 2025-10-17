@@ -46,6 +46,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
   List<Media> medias = <Media>[];
   List<Device> devices = <Device>[];
   TextEditingController controller = TextEditingController();
+  TextEditingController clearkeyController = TextEditingController();
   TextEditingController metasController = TextEditingController();
   double bufferingProgress = 0.0;
   Media? metadataCurrentMedia;
@@ -204,10 +205,34 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                       ],
                                     ),
                                   ),
+                                ],
+                              ),
+                              const Divider(
+                                height: 8.0,
+                                color: Colors.transparent,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: clearkeyController,
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                      ),
+                                      decoration: InputDecoration.collapsed(
+                                        hintStyle: const TextStyle(
+                                          fontSize: 14.0,
+                                        ),
+                                        hintText: 'ClearKey (optional, format: kid:key)',
+                                      ),
+                                    ),
+                                  ),
                                   Padding(
                                     padding: EdgeInsets.only(left: 10.0),
                                     child: ElevatedButton(
                                       onPressed: () {
+                                        final clearkey = clearkeyController.text.trim();
                                         if (mediaType == MediaType.file) {
                                           medias.add(
                                             Media.file(
@@ -215,6 +240,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                                 controller.text
                                                     .replaceAll('"', ''),
                                               ),
+                                              clearkey: clearkey.isNotEmpty ? clearkey : null,
                                             ),
                                           );
                                         } else if (mediaType ==
@@ -222,9 +248,12 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                           medias.add(
                                             Media.network(
                                               controller.text,
+                                              clearkey: clearkey.isNotEmpty ? clearkey : null,
                                             ),
                                           );
                                         }
+                                        controller.clear();
+                                        clearkeyController.clear();
                                         setState(() {});
                                       },
                                       child: Text(
@@ -257,10 +286,12 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      media.mediaType.toString(),
+                                      '${media.mediaType.toString()}${media.clearkey != null ? ' | ClearKey: ${media.clearkey}' : ''}',
                                       style: const TextStyle(
-                                        fontSize: 14.0,
+                                        fontSize: 12.0,
                                       ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 )

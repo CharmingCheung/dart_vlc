@@ -42,6 +42,7 @@ class Media implements MediaSource {
   final Duration startTime;
   final Duration stopTime;
   final Map<String, String> metas;
+  final String? clearkey;
 
   const Media._({
     required this.mediaType,
@@ -49,6 +50,7 @@ class Media implements MediaSource {
     required this.metas,
     this.startTime = Duration.zero,
     this.stopTime = Duration.zero,
+    this.clearkey,
   });
 
   /// Makes [Media] object from a [File].
@@ -58,6 +60,7 @@ class Media implements MediaSource {
     Duration timeout = const Duration(seconds: 10),
     startTime = Duration.zero,
     stopTime = Duration.zero,
+    String? clearkey,
   }) {
     final media = Media._(
       mediaType: MediaType.file,
@@ -65,6 +68,7 @@ class Media implements MediaSource {
       metas: {},
       startTime: startTime,
       stopTime: stopTime,
+      clearkey: clearkey,
     );
     if (parse) {
       media.parse(timeout);
@@ -79,6 +83,7 @@ class Media implements MediaSource {
     Duration timeout = const Duration(seconds: 10),
     startTime = Duration.zero,
     stopTime = Duration.zero,
+    String? clearkey,
   }) {
     final resource = (url is Uri) ? url.toString() : url;
     final Media media = Media._(
@@ -87,6 +92,7 @@ class Media implements MediaSource {
       metas: {},
       startTime: startTime,
       stopTime: stopTime,
+      clearkey: clearkey,
     );
     if (parse) {
       media.parse(timeout);
@@ -101,6 +107,7 @@ class Media implements MediaSource {
     String? vdev,
     String? adev,
     int? liveCaching,
+    String? clearkey,
   }) {
     final resourceUrl = rawUrl ??
         _buildDirectShowUrl(args ??
@@ -111,7 +118,10 @@ class Media implements MediaSource {
             });
 
     return Media._(
-        mediaType: MediaType.directShow, resource: resourceUrl, metas: {});
+        mediaType: MediaType.directShow,
+        resource: resourceUrl,
+        metas: {},
+        clearkey: clearkey);
   }
 
   /// Makes [Media] object from assets.
@@ -124,6 +134,7 @@ class Media implements MediaSource {
   factory Media.asset(
     String asset, {
     startTime = Duration.zero,
+    String? clearkey,
   }) {
     String? assetPath;
     if (Platform.isWindows || Platform.isLinux) {
@@ -162,6 +173,7 @@ class Media implements MediaSource {
       resource: url.toString(),
       metas: {},
       startTime: startTime,
+      clearkey: clearkey,
     );
   }
 

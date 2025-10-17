@@ -58,6 +58,9 @@ void Player::Open(std::shared_ptr<MediaSource> media_source, bool auto_start) {
     if (media->stop_time() != "") {
       vlc_media.addOption(media->stop_time());
     }
+    if (media->clearkey() != "") {
+      vlc_media.addOption(media->clearkey());
+    }
     vlc_media_list_.lock();
     vlc_media_list_.addMedia(vlc_media);
     vlc_media_list_.unlock();
@@ -76,6 +79,9 @@ void Player::Open(std::shared_ptr<MediaSource> media_source, bool auto_start) {
       }
       if (media->stop_time() != "") {
         vlc_media.addOption(media->stop_time());
+      }
+      if (media->clearkey() != "") {
+        vlc_media.addOption(media->clearkey());
       }
       vlc_media_list_.lock();
       vlc_media_list_.addMedia(vlc_media);

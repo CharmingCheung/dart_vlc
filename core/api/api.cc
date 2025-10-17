@@ -101,16 +101,17 @@ void PlayerOpen(int32_t id, bool auto_start, const char** source,
         id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
-  for (int32_t index = 0; index < 4 * source_size; index += 4) {
+  for (int32_t index = 0; index < 5 * source_size; index += 5) {
     std::shared_ptr<Media> media;
     const char* type = source[index];
     const char* resource = source[index + 1];
     const char* start_time = source[index + 2];
     const char* stop_time = source[index + 3];
+    const char* clearkey = source[index + 4];
     if (strcmp(type, "MediaType.file") == 0)
-      media = Media::File(resource, false, 10000, start_time, stop_time);
+      media = Media::File(resource, false, 10000, start_time, stop_time, clearkey);
     else if (strcmp(type, "MediaType.network") == 0)
-      media = Media::Network(resource, false, 10000, start_time, stop_time);
+      media = Media::Network(resource, false, 10000, start_time, stop_time, clearkey);
     else
       media = Media::DirectShow(resource);
     medias.emplace_back(media);

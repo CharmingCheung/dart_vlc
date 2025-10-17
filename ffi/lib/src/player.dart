@@ -177,11 +177,15 @@ class Player {
   ///
   void open(MediaSource source, {bool autoStart = true}) {
     if (source is Media) {
+      final clearkeyOption = source.clearkey != null && source.clearkey!.isNotEmpty
+          ? ':adaptive-clearkey=${source.clearkey}'
+          : '';
       final args = <String>[
         source.mediaType.toString(),
         source.resource,
         source.startTime.argument('start-time'),
         source.stopTime.argument('stop-time'),
+        clearkeyOption,
       ];
       // Parse [commandlineArguments] & convert to `char*[]`.
       final List<Pointer<Utf8>> pointers = args.map<Pointer<Utf8>>((e) {
@@ -204,12 +208,16 @@ class Player {
     if (source is Playlist) {
       List<String> medias = <String>[];
       for (var media in source.medias) {
+        final clearkeyOption = media.clearkey != null && media.clearkey!.isNotEmpty
+            ? ':adaptive-clearkey=${media.clearkey}'
+            : '';
         medias.addAll(
           <String>[
             media.mediaType.toString(),
             media.resource,
             media.startTime.argument('start-time'),
             media.stopTime.argument('stop-time'),
+            clearkeyOption,
           ],
         );
       }

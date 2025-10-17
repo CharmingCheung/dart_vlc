@@ -39,13 +39,14 @@ std::shared_ptr<Media> Media::Create(std::string_view type,
 
 std::shared_ptr<Media> Media::File(std::string path, bool parse,
                                    int32_t timeout, std::string start_time,
-                                   std::string stop_time) {
+                                   std::string stop_time, std::string clearkey) {
   std::shared_ptr<Media> media = std::make_shared<Media>();
   media->resource_ = path;
   media->location_ = "file:///" + path;
   media->media_type_ = kMediaTypeFile;
   media->start_time_ = start_time;
   media->stop_time_ = stop_time;
+  media->clearkey_ = clearkey;
   if (parse) {
     media->Parse(timeout);
   }
@@ -54,13 +55,14 @@ std::shared_ptr<Media> Media::File(std::string path, bool parse,
 
 std::shared_ptr<Media> Media::Network(std::string url, bool parse,
                                       int32_t timeout, std::string start_time,
-                                      std::string stop_time) {
+                                      std::string stop_time, std::string clearkey) {
   std::shared_ptr<Media> media = std::make_shared<Media>();
   media->resource_ = url;
   media->location_ = url;
   media->media_type_ = kMediaTypeNetwork;
   media->start_time_ = start_time;
   media->stop_time_ = stop_time;
+  media->clearkey_ = clearkey;
   if (parse) {
     media->Parse(timeout);
   }
