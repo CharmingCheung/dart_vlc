@@ -34,7 +34,15 @@ class PrimaryScreenState extends State<PrimaryScreen> {
   Player player = Player(
     id: 0,
     commandlineArguments: Platform.isMacOS
-        ? ['--plugin-path=/Users/charming/IdeaProjects/vlc/build/VLC.app/Contents/MacOS/plugins']
+        ? [
+            '--plugin-path=/Users/charming/IdeaProjects/vlc/build/VLC.app/Contents/MacOS/plugins',
+            '--freetype-font=/Users/charming/Downloads/DFHei-Md-HKSCS-U-01.ttf',
+            '--freetype-fontsize=24',
+            '--freetype-color=16777215',
+            '--freetype-opacity=255',
+            '--text-renderer=freetype',
+            '--subsdec-encoding=UTF-8',
+          ]
         : null,
   );
   MediaType mediaType = MediaType.file;
