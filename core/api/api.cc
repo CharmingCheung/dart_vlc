@@ -365,6 +365,81 @@ void PlayerSetHWND(int32_t id, int64_t hwnd) {
   player->SetHWND(hwnd);
 }
 
+// Track management implementations
+const char* PlayerGetAudioTracks(int32_t id) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    return "[]";
+  }
+  static std::string result;
+  result = player->GetAudioTracks();
+  return result.c_str();
+}
+
+const char* PlayerGetVideoTracks(int32_t id) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    return "[]";
+  }
+  static std::string result;
+  result = player->GetVideoTracks();
+  return result.c_str();
+}
+
+const char* PlayerGetSubtitleTracks(int32_t id) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    return "[]";
+  }
+  static std::string result;
+  result = player->GetSubtitleTracks();
+  return result.c_str();
+}
+
+int32_t PlayerGetAudioTrack(int32_t id) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    return -1;
+  }
+  return player->GetAudioTrack();
+}
+
+int32_t PlayerGetVideoTrack(int32_t id) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    return -1;
+  }
+  return player->GetVideoTrack();
+}
+
+int32_t PlayerGetSubtitleTrack(int32_t id) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    return -1;
+  }
+  return player->GetSubtitleTrack();
+}
+
+void PlayerSetVideoTrack(int32_t id, int32_t track) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  player->SetVideoTrack(track);
+}
+
+void PlayerSetSubtitleTrack(int32_t id, int32_t track) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  player->SetSubtitleTrack(track);
+}
+
 void MediaClearMap(void*, void* peer) {
   delete reinterpret_cast<std::map<std::string, std::string>*>(peer);
 }

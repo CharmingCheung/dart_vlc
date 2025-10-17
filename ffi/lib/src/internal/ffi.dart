@@ -115,6 +115,42 @@ abstract class PlayerFFI {
   static final PlayerSetHWNDDart setHWND = dynamicLibrary
       .lookup<NativeFunction<PlayerSetHWNDCXX>>('PlayerSetHWND')
       .asFunction();
+
+  // Track management FFI bindings
+  static final PlayerGetAudioTracksDart getAudioTracks = dynamicLibrary
+      .lookup<NativeFunction<PlayerGetAudioTracksCXX>>('PlayerGetAudioTracks')
+      .asFunction();
+
+  static final PlayerGetVideoTracksDart getVideoTracks = dynamicLibrary
+      .lookup<NativeFunction<PlayerGetVideoTracksCXX>>('PlayerGetVideoTracks')
+      .asFunction();
+
+  static final PlayerGetSubtitleTracksDart getSubtitleTracks = dynamicLibrary
+      .lookup<NativeFunction<PlayerGetSubtitleTracksCXX>>(
+          'PlayerGetSubtitleTracks')
+      .asFunction();
+
+  static final PlayerGetAudioTrackDart getAudioTrack = dynamicLibrary
+      .lookup<NativeFunction<PlayerGetAudioTrackCXX>>('PlayerGetAudioTrack')
+      .asFunction();
+
+  static final PlayerGetVideoTrackDart getVideoTrack = dynamicLibrary
+      .lookup<NativeFunction<PlayerGetVideoTrackCXX>>('PlayerGetVideoTrack')
+      .asFunction();
+
+  static final PlayerGetSubtitleTrackDart getSubtitleTrack = dynamicLibrary
+      .lookup<NativeFunction<PlayerGetSubtitleTrackCXX>>(
+          'PlayerGetSubtitleTrack')
+      .asFunction();
+
+  static final PlayerSetVideoTrackDart setVideoTrack = dynamicLibrary
+      .lookup<NativeFunction<PlayerSetVideoTrackCXX>>('PlayerSetVideoTrack')
+      .asFunction();
+
+  static final PlayerSetSubtitleTrackDart setSubtitleTrack = dynamicLibrary
+      .lookup<NativeFunction<PlayerSetSubtitleTrackCXX>>(
+          'PlayerSetSubtitleTrack')
+      .asFunction();
 }
 
 abstract class MediaFFI {

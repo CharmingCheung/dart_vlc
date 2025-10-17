@@ -22,6 +22,7 @@ export 'package:dart_vlc_ffi/src/broadcast.dart';
 export 'package:dart_vlc_ffi/src/chromecast.dart';
 export 'package:dart_vlc_ffi/src/record.dart';
 export 'package:dart_vlc_ffi/src/device.dart';
+export 'package:dart_vlc_ffi/src/media_track.dart';
 export 'package:dart_vlc_ffi/src/player_state/player_state.dart';
 export 'package:dart_vlc_ffi/src/media_source/media_source.dart';
 export 'package:dart_vlc_ffi/src/media_source/media.dart';

@@ -95,6 +95,27 @@ class Player {
 
   int32_t GetAudioTrackCount();
 
+  // Track management API
+  // Returns a JSON string containing array of track info:
+  // [{"id": 1, "name": "Track 1"}, {"id": 2, "name": "Track 2"}, ...]
+  std::string GetAudioTracks();
+
+  std::string GetVideoTracks();
+
+  std::string GetSubtitleTracks();
+
+  // Get currently selected track ID (-1 if none)
+  int32_t GetAudioTrack();
+
+  int32_t GetVideoTrack();
+
+  int32_t GetSubtitleTrack();
+
+  // Set track by ID
+  void SetVideoTrack(int32_t track);
+
+  void SetSubtitleTrack(int32_t track);
+
   void SetHWND(int64_t hwnd);
 
   // These methods register callbacks from the client code which get invoked

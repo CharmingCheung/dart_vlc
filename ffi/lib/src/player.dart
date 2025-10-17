@@ -1,9 +1,11 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:async';
+import 'dart:convert';
 import 'package:ffi/ffi.dart';
 import 'package:dart_vlc_ffi/dart_vlc_ffi.dart';
 import 'package:dart_vlc_ffi/src/internal/ffi.dart';
+import 'package:dart_vlc_ffi/src/media_track.dart';
 
 /// Represents dimensions of a video.
 class VideoDimensions {
@@ -417,6 +419,105 @@ class Player {
     // for some reason this value returns 0 when no tracks exists
     // and 2 or more if there's 1 or more audio tracks for this [MediaSource].
     return count > 1 ? count - 1 : count;
+  }
+
+  // Track Management API
+
+  /// Gets all available audio tracks from current [MediaSource]
+  /// Returns a list of [MediaTrack] objects containing track ID and name
+  List<MediaTrack> get audioTracks {
+    final jsonPtr = PlayerFFI.getAudioTracks(id);
+    final jsonStr = jsonPtr.toDartString();
+    if (jsonStr.isEmpty || jsonStr == '[]') {
+      return [];
+    }
+    try {
+      final List<dynamic> tracksJson = jsonDecode(jsonStr);
+      return tracksJson
+          .map((track) => MediaTrack(
+                id: track['id'],
+                name: track['name'] ?? '',
+                type: MediaTrackType.audio,
+              ))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Gets all available video tracks from current [MediaSource]
+  /// Returns a list of [MediaTrack] objects containing track ID and name
+  List<MediaTrack> get videoTracks {
+    final jsonPtr = PlayerFFI.getVideoTracks(id);
+    final jsonStr = jsonPtr.toDartString();
+    if (jsonStr.isEmpty || jsonStr == '[]') {
+      return [];
+    }
+    try {
+      final List<dynamic> tracksJson = jsonDecode(jsonStr);
+      return tracksJson
+          .map((track) => MediaTrack(
+                id: track['id'],
+                name: track['name'] ?? '',
+                type: MediaTrackType.video,
+              ))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Gets all available subtitle tracks from current [MediaSource]
+  /// Returns a list of [MediaTrack] objects containing track ID and name
+  List<MediaTrack> get subtitleTracks {
+    final jsonPtr = PlayerFFI.getSubtitleTracks(id);
+    final jsonStr = jsonPtr.toDartString();
+    if (jsonStr.isEmpty || jsonStr == '[]') {
+      return [];
+    }
+    try {
+      final List<dynamic> tracksJson = jsonDecode(jsonStr);
+      return tracksJson
+          .map((track) => MediaTrack(
+                id: track['id'],
+                name: track['name'] ?? '',
+                type: MediaTrackType.subtitle,
+              ))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Gets the currently selected audio track
+  /// Returns the track ID, or -1 if no track is selected
+  int get currentAudioTrack {
+    return PlayerFFI.getAudioTrack(id);
+  }
+
+  /// Gets the currently selected video track
+  /// Returns the track ID, or -1 if no track is selected
+  int get currentVideoTrack {
+    return PlayerFFI.getVideoTrack(id);
+  }
+
+  /// Gets the currently selected subtitle track
+  /// Returns the track ID, or -1 if no track is selected
+  int get currentSubtitleTrack {
+    return PlayerFFI.getSubtitleTrack(id);
+  }
+
+  /// Sets the video track for the current [MediaSource]
+  /// Pass the track ID from [videoTracks] list
+  void setVideoTrack(int track) {
+    PlayerFFI.setVideoTrack(id, track);
+  }
+
+  /// Sets the subtitle track for the current [MediaSource]
+  /// Pass the track ID from [subtitleTracks] list
+  /// Use -1 to disable subtitles
+  void setSubtitleTrack(int track) {
+    PlayerFFI.setSubtitleTrack(id, track);
   }
 
   void setHWND(int hwnd) {
