@@ -311,17 +311,17 @@ void Player::SetVideoDimensionsCallback(
             video_width = preferred_video_width_.value_or(0);
             video_height = preferred_video_height_.value_or(0);
             pitch = video_width_ * 4;
-            vlc_media_player_.setVideoFormat("RGBA", video_width, video_height,
+            vlc_media_player_.setVideoFormat("BGRA", video_width, video_height,
                                              pitch);
           } else {
             video_height = video_height_;
             video_width = video_width_;
             pitch = video_width_ * 4;
-            vlc_media_player_.setVideoFormat("RGBA", video_width, video_height,
+            vlc_media_player_.setVideoFormat("BGRA", video_width, video_height,
                                              pitch);
           }
         }
-        strncpy(chroma, "RGBA", 4);
+        strncpy(chroma, "BGRA", 4);
         *w = preferred_video_width_.value_or(video_width_);
         *h = preferred_video_height_.value_or(video_height_);
         *p = preferred_video_width_.value_or(video_width_) * 4;
