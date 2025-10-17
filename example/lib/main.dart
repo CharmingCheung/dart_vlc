@@ -514,6 +514,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                       ),
                     ),
                   ),
+                  _trackManagement(context),
                   Card(
                     elevation: 2.0,
                     margin: const EdgeInsets.all(4.0),
@@ -763,6 +764,174 @@ class PrimaryScreenState extends State<PrimaryScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _trackManagement(BuildContext context) {
+    return Card(
+      elevation: 2.0,
+      margin: const EdgeInsets.all(4.0),
+      child: Container(
+        margin: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Track Management'),
+            const Divider(
+              height: 12.0,
+              color: Colors.transparent,
+            ),
+            const Divider(
+              height: 12.0,
+            ),
+            // Audio tracks
+            const Text(
+              'Audio Tracks:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+            ),
+            const Divider(
+              height: 8.0,
+              color: Colors.transparent,
+            ),
+            _buildAudioTrackSelector(),
+            const Divider(
+              height: 16.0,
+            ),
+            // Video tracks
+            const Text(
+              'Video Tracks:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+            ),
+            const Divider(
+              height: 8.0,
+              color: Colors.transparent,
+            ),
+            _buildVideoTrackSelector(),
+            const Divider(
+              height: 16.0,
+            ),
+            // Subtitle tracks
+            const Text(
+              'Subtitle Tracks:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+            ),
+            const Divider(
+              height: 8.0,
+              color: Colors.transparent,
+            ),
+            _buildSubtitleTrackSelector(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAudioTrackSelector() {
+    final tracks = player.audioTracks;
+    final current = player.currentAudioTrack;
+
+    if (tracks.isEmpty) {
+      return const Text(
+        '  No audio tracks available',
+        style: TextStyle(fontSize: 12.0, color: Colors.grey),
+      );
+    }
+
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: tracks.map((track) {
+        final isSelected = track.id == current;
+        return ChoiceChip(
+          label: Text(
+            track.name.isEmpty ? 'Track ${track.id}' : track.name,
+            style: const TextStyle(fontSize: 12.0),
+          ),
+          selected: isSelected,
+          onSelected: (selected) {
+            if (selected) {
+              player.setAudioTrack(track.id);
+              setState(() {});
+            }
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildVideoTrackSelector() {
+    final tracks = player.videoTracks;
+    final current = player.currentVideoTrack;
+
+    if (tracks.isEmpty) {
+      return const Text(
+        '  No video tracks available',
+        style: TextStyle(fontSize: 12.0, color: Colors.grey),
+      );
+    }
+
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: tracks.map((track) {
+        final isSelected = track.id == current;
+        return ChoiceChip(
+          label: Text(
+            track.name.isEmpty ? 'Track ${track.id}' : track.name,
+            style: const TextStyle(fontSize: 12.0),
+          ),
+          selected: isSelected,
+          onSelected: (selected) {
+            if (selected) {
+              player.setVideoTrack(track.id);
+              setState(() {});
+            }
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildSubtitleTrackSelector() {
+    final tracks = player.subtitleTracks;
+    final current = player.currentSubtitleTrack;
+
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: [
+        // Disable option
+        ChoiceChip(
+          label: const Text(
+            'Disabled',
+            style: TextStyle(fontSize: 12.0),
+          ),
+          selected: current == -1,
+          onSelected: (selected) {
+            if (selected) {
+              player.setSubtitleTrack(-1);
+              setState(() {});
+            }
+          },
+        ),
+        // Subtitle tracks
+        ...tracks.map((track) {
+          final isSelected = track.id == current;
+          return ChoiceChip(
+            label: Text(
+              track.name.isEmpty ? 'Track ${track.id}' : track.name,
+              style: const TextStyle(fontSize: 12.0),
+            ),
+            selected: isSelected,
+            onSelected: (selected) {
+              if (selected) {
+                player.setSubtitleTrack(track.id);
+                setState(() {});
+              }
+            },
+          );
+        }).toList(),
+      ],
     );
   }
 

@@ -19,6 +19,7 @@
 #include "player/player.h"
 
 #include <functional>
+#include <sstream>
 
 Player::Player(const std::vector<std::string>& cmd_arguments) {
 
@@ -500,6 +501,84 @@ void Player::OnVideoPictureCallback(void* picture) {
                     preferred_video_width_.value_or(video_width_),
                     preferred_video_height_.value_or(video_height_));
   }
+}
+
+// Helper function to convert libvlc_track_description_t list to JSON string
+std::string TrackDescriptionToJson(libvlc_track_description_t* track_desc) {
+  std::ostringstream json;
+  json << "[";
+  bool first = true;
+
+  libvlc_track_description_t* current = track_desc;
+  while (current != nullptr) {
+    if (!first) {
+      json << ",";
+    }
+    first = false;
+
+    json << "{\"id\":" << current->i_id << ",\"name\":\"";
+
+    // Escape JSON special characters in name
+    if (current->psz_name != nullptr) {
+      std::string name(current->psz_name);
+      for (char c : name) {
+        if (c == '"' || c == '\\') {
+          json << '\\';
+        }
+        json << c;
+      }
+    }
+
+    json << "\"}";
+    current = current->p_next;
+  }
+
+  json << "]";
+  return json.str();
+}
+
+std::string Player::GetAudioTracks() {
+  libvlc_track_description_t* tracks =
+      libvlc_audio_get_track_description(vlc_media_player_);
+  std::string result = TrackDescriptionToJson(tracks);
+  libvlc_track_description_list_release(tracks);
+  return result;
+}
+
+std::string Player::GetVideoTracks() {
+  libvlc_track_description_t* tracks =
+      libvlc_video_get_track_description(vlc_media_player_);
+  std::string result = TrackDescriptionToJson(tracks);
+  libvlc_track_description_list_release(tracks);
+  return result;
+}
+
+std::string Player::GetSubtitleTracks() {
+  libvlc_track_description_t* tracks =
+      libvlc_video_get_spu_description(vlc_media_player_);
+  std::string result = TrackDescriptionToJson(tracks);
+  libvlc_track_description_list_release(tracks);
+  return result;
+}
+
+int32_t Player::GetAudioTrack() {
+  return libvlc_audio_get_track(vlc_media_player_);
+}
+
+int32_t Player::GetVideoTrack() {
+  return libvlc_video_get_track(vlc_media_player_);
+}
+
+int32_t Player::GetSubtitleTrack() {
+  return libvlc_video_get_spu(vlc_media_player_);
+}
+
+void Player::SetVideoTrack(int32_t track) {
+  libvlc_video_set_track(vlc_media_player_, track);
+}
+
+void Player::SetSubtitleTrack(int32_t track) {
+  libvlc_video_set_spu(vlc_media_player_, track);
 }
 
 Player::~Player() { vlc_media_player_.stop(); }

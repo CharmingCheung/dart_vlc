@@ -102,6 +102,25 @@ DLLEXPORT void PlayerSetAudioTrack(int32_t id, int32_t track);
 
 DLLEXPORT int32_t PlayerGetAudioTrackCount(int32_t id);
 
+// Track management API - returns JSON string of track info
+DLLEXPORT const char* PlayerGetAudioTracks(int32_t id);
+
+DLLEXPORT const char* PlayerGetVideoTracks(int32_t id);
+
+DLLEXPORT const char* PlayerGetSubtitleTracks(int32_t id);
+
+// Get currently selected track ID
+DLLEXPORT int32_t PlayerGetAudioTrack(int32_t id);
+
+DLLEXPORT int32_t PlayerGetVideoTrack(int32_t id);
+
+DLLEXPORT int32_t PlayerGetSubtitleTrack(int32_t id);
+
+// Set track by ID
+DLLEXPORT void PlayerSetVideoTrack(int32_t id, int32_t track);
+
+DLLEXPORT void PlayerSetSubtitleTrack(int32_t id, int32_t track);
+
 DLLEXPORT void PlayerSetHWND(int32_t id, int64_t hwnd);
 
 DLLEXPORT const char** MediaParse(Dart_Handle object, const char* type,
