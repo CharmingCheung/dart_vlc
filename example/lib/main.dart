@@ -31,7 +31,12 @@ class PrimaryScreen extends StatefulWidget {
 }
 
 class PrimaryScreenState extends State<PrimaryScreen> {
-  Player player = Player(id: 0);
+  Player player = Player(
+    id: 0,
+    commandlineArguments: Platform.isMacOS
+        ? ['--plugin-path=/Users/charming/IdeaProjects/vlc/build/VLC.app/Contents/MacOS/plugins']
+        : null,
+  );
   MediaType mediaType = MediaType.file;
   CurrentState current = CurrentState();
   PositionState position = PositionState();
