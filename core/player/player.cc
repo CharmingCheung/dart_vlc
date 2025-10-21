@@ -25,17 +25,18 @@
 // Global map to track player instances for subtitle callback
 static std::map<int32_t, Player*> g_player_instances;
 
-// External declaration of VLC subtitle callback setter
+// External declaration of VLC subtitle callback setter (weak symbol)
 extern "C" {
   typedef void (*subtitle_callback_t)(bool, const char*, int64_t, int64_t, int64_t);
-  extern void SubtitleSetCallback(subtitle_callback_t callback);
+
+  // Weak symbol - only called if VLC exports this function
+  void SubtitleSetCallback(subtitle_callback_t callback) __attribute__((weak));
 }
 
 // Global subtitle callback that routes to the appropriate Player instance
 static void GlobalSubtitleCallback(bool is_showing, const char* text,
                                    int64_t start_ms, int64_t stop_ms, int64_t current_ms) {
-  // Note: We need to determine which player this belongs to
-  // For now, forward to all registered players (you may need a better routing mechanism)
+  // For now, forward to all registered players
   for (auto& [id, player] : g_player_instances) {
     if (player) {
       player->InvokeSubtitleCallback(is_showing, text, start_ms, stop_ms, current_ms);
@@ -68,9 +69,9 @@ Player::Player(const std::vector<std::string>& cmd_arguments, int32_t id) : id_(
     g_player_instances[id_] = this;
   }
 
-  // Set global subtitle callback (only needs to be done once)
+  // Set global subtitle callback (only if VLC exports the function)
   static bool callback_registered = false;
-  if (!callback_registered) {
+  if (!callback_registered && SubtitleSetCallback != nullptr) {
     SubtitleSetCallback(GlobalSubtitleCallback);
     callback_registered = true;
   }
