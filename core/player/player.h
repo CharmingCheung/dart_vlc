@@ -156,6 +156,14 @@ class Player {
 
   int32_t id() const { return id_; }
 
+  // Public accessor for subtitle callback (needed by global callback)
+  void InvokeSubtitleCallback(bool is_showing, const char* text,
+                              int64_t start_ms, int64_t stop_ms, int64_t current_ms) {
+    if (subtitle_callback_) {
+      subtitle_callback_(is_showing, text, start_ms, stop_ms, current_ms);
+    }
+  }
+
   ~Player();
 
  private:

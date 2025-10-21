@@ -37,8 +37,8 @@ static void GlobalSubtitleCallback(bool is_showing, const char* text,
   // Note: We need to determine which player this belongs to
   // For now, forward to all registered players (you may need a better routing mechanism)
   for (auto& [id, player] : g_player_instances) {
-    if (player && player->subtitle_callback_) {
-      player->subtitle_callback_(is_showing, text, start_ms, stop_ms, current_ms);
+    if (player) {
+      player->InvokeSubtitleCallback(is_showing, text, start_ms, stop_ms, current_ms);
     }
   }
 }
