@@ -334,27 +334,6 @@ final ReceivePort receiver = ReceivePort()
           }
           break;
         }
-      case 'subtitleEvent':
-        {
-          bool isShowing = event[2];
-          String text = event[3];
-          int startTime = event[4];
-          int stopTime = event[5];
-          int currentTime = event[6];
-
-          players[id]!.subtitle = SubtitleData(
-            text: text,
-            startTime: startTime,
-            stopTime: stopTime,
-            currentTime: currentTime,
-            isShowing: isShowing,
-          );
-
-          if (!players[id]!.subtitleController.isClosed) {
-            players[id]!.subtitleController.add(players[id]!.subtitle!);
-          }
-          break;
-        }
       default:
         {
           players[id]!.error = event[2];

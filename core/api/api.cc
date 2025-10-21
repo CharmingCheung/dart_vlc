@@ -56,7 +56,7 @@ void PlayerCreate(int32_t id, int32_t video_width, int32_t video_height,
   }
   auto player = g_players->Get(id);
   if (!player) {
-    g_players->Create(id, std::move(std::make_unique<Player>(args, id)));
+    g_players->Create(id, std::move(std::make_unique<Player>(args)));
     player = g_players->Get(id);
   }
   if (video_width > 0 && video_height > 0) {
@@ -88,10 +88,6 @@ void PlayerCreate(int32_t id, int32_t video_width, int32_t video_height,
       });
   player->SetErrorCallback(
       [=](std::string error) -> void { OnError(id, error.c_str()); });
-  player->SetSubtitleCallback(
-      [=](bool is_showing, const char* text, int64_t start_ms, int64_t stop_ms, int64_t current_ms) -> void {
-        OnSubtitle(id, is_showing, text, start_ms, stop_ms, current_ms);
-      });
 }
 
 void PlayerDispose(int32_t id) { g_players->Dispose(id); }
@@ -102,7 +98,7 @@ void PlayerOpen(int32_t id, bool auto_start, const char** source,
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   for (int32_t index = 0; index < 5 * source_size; index += 5) {
@@ -127,7 +123,7 @@ void PlayerPlay(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Play();
@@ -137,7 +133,7 @@ void PlayerPause(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Pause();
@@ -147,7 +143,7 @@ void PlayerPlayOrPause(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->PlayOrPause();
@@ -157,7 +153,7 @@ void PlayerStop(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Stop();
@@ -167,7 +163,7 @@ void PlayerNext(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Next();
@@ -177,7 +173,7 @@ void PlayerPrevious(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Previous();
@@ -187,7 +183,7 @@ void PlayerJumpToIndex(int32_t id, int32_t index) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->JumpToIndex(index);
@@ -197,7 +193,7 @@ void PlayerSeek(int32_t id, int32_t position) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Seek(position);
@@ -207,7 +203,7 @@ void PlayerSetVolume(int32_t id, float volume) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->SetVolume(volume);
@@ -217,7 +213,7 @@ void PlayerSetRate(int32_t id, float rate) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->SetRate(rate);
@@ -227,7 +223,7 @@ void PlayerSetUserAgent(int32_t id, const char* userAgent) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->SetUserAgent(userAgent);
@@ -238,7 +234,7 @@ void PlayerSetDevice(int32_t id, const char* device_id,
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   Device device(device_id, device_name);
@@ -249,7 +245,7 @@ void PlayerSetEqualizer(int32_t id, int32_t equalizer_id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   Equalizer* equalizer = g_equalizers->Get(equalizer_id);
@@ -260,7 +256,7 @@ void PlayerSetPlaylistMode(int32_t id, const char* mode) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   PlaylistMode playlistMode;
@@ -277,7 +273,7 @@ void PlayerAdd(int32_t id, const char* type, const char* resource) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   std::shared_ptr<Media> media;
@@ -294,7 +290,7 @@ void PlayerRemove(int32_t id, int32_t index) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Remove(index);
@@ -305,7 +301,7 @@ void PlayerInsert(int32_t id, int32_t index, const char* type,
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   std::shared_ptr<Media> media;
@@ -322,7 +318,7 @@ void PlayerMove(int32_t id, int32_t initial_index, int32_t final_index) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->Move(initial_index, final_index);
@@ -333,7 +329,7 @@ void PlayerTakeSnapshot(int32_t id, const char* file_path, int32_t width,
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->TakeSnapshot(file_path, width, height);
@@ -343,7 +339,7 @@ void PlayerSetAudioTrack(int32_t id, int32_t track) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->SetAudioTrack(track);
@@ -353,7 +349,7 @@ int32_t PlayerGetAudioTrackCount(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   return player->GetAudioTrackCount();
@@ -363,7 +359,7 @@ void PlayerSetHWND(int32_t id, int64_t hwnd) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->SetHWND(hwnd);
@@ -428,7 +424,7 @@ void PlayerSetVideoTrack(int32_t id, int32_t track) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->SetVideoTrack(track);
@@ -438,7 +434,7 @@ void PlayerSetSubtitleTrack(int32_t id, int32_t track) {
   auto player = g_players->Get(id);
   if (!player) {
     g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{}, id)));
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
   player->SetSubtitleTrack(track);

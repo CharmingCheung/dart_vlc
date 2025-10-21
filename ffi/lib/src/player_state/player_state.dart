@@ -44,32 +44,3 @@ class GeneralState {
   /// Rate of playback of [Player] instance.
   double rate = 1.0;
 }
-
-/// Subtitle data received from VLC
-class SubtitleData {
-  /// The subtitle text content
-  final String text;
-
-  /// Start time in milliseconds
-  final int startTime;
-
-  /// Stop time in milliseconds
-  final int stopTime;
-
-  /// Current playback time when this subtitle event occurred
-  final int currentTime;
-
-  /// Whether the subtitle is being shown (true) or hidden (false)
-  final bool isShowing;
-
-  const SubtitleData({
-    required this.text,
-    required this.startTime,
-    required this.stopTime,
-    required this.currentTime,
-    required this.isShowing,
-  });
-
-  @override
-  String toString() => 'SubtitleData(text: $text, startTime: $startTime, stopTime: $stopTime, currentTime: $currentTime, isShowing: $isShowing)';
-}
