@@ -86,6 +86,12 @@ class Player {
   /// Stream to listen to error events.
   late Stream<String> errorStream;
 
+  /// Current subtitle data.
+  SubtitleData? subtitle;
+
+  /// Stream to listen to subtitle events.
+  late Stream<SubtitleData> subtitleStream;
+
   /// Creates a new [Player] instance.
   ///
   /// Takes unique id as parameter.
@@ -113,6 +119,8 @@ class Player {
     bufferingProgressStream = bufferingProgressController.stream;
     errorController = StreamController<String>.broadcast();
     errorStream = errorController.stream;
+    subtitleController = StreamController<SubtitleData>.broadcast();
+    subtitleStream = subtitleController.stream;
     if (videoDimensions != null) {
       preferredVideoDimensions = videoDimensions;
     }
@@ -533,6 +541,7 @@ class Player {
     videoDimensionsController.close();
     bufferingProgressController.close();
     errorController.close();
+    subtitleController.close();
     PlayerFFI.dispose(id);
   }
 
@@ -544,4 +553,5 @@ class Player {
   late StreamController<VideoDimensions> videoDimensionsController;
   late StreamController<double> bufferingProgressController;
   late StreamController<String> errorController;
+  late StreamController<SubtitleData> subtitleController;
 }

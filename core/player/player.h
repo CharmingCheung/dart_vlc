@@ -45,7 +45,7 @@ class Player {
 
   // Public API.
 
-  Player(const std::vector<std::string>& cmd_arguments);
+  Player(const std::vector<std::string>& cmd_arguments, int32_t id = -1);
 
   void Open(std::shared_ptr<MediaSource> media_source, bool auto_start = true);
 
@@ -151,6 +151,11 @@ class Player {
 
   void SetErrorCallback(std::function<void(std::string)> callback);
 
+  void SetSubtitleCallback(
+      std::function<void(bool, const char*, int64_t, int64_t, int64_t)> callback);
+
+  int32_t id() const { return id_; }
+
   ~Player();
 
  private:
@@ -205,6 +210,8 @@ class Player {
   std::function<void(float)> volume_callback_ = nullptr;
   std::function<void(float)> rate_callback_ = nullptr;
   std::function<void(uint8_t*, int32_t, int32_t)> video_callback_ = nullptr;
+  std::function<void(bool, const char*, int64_t, int64_t, int64_t)> subtitle_callback_ = nullptr;
+  int32_t id_ = -1;
 };
 
 #endif  // PLAYER_PLAYER_H_

@@ -50,6 +50,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
   TextEditingController metasController = TextEditingController();
   double bufferingProgress = 0.0;
   Media? metadataCurrentMedia;
+  String? currentSubtitle; // 当前字幕文本
 
   @override
   void initState() {
@@ -77,6 +78,17 @@ class PrimaryScreenState extends State<PrimaryScreen> {
       );
       player.errorStream.listen((event) {
         debugPrint('libVLC error.');
+      });
+      // 监听字幕事件 - 直接显示收到的文本
+      player.subtitleStream.listen((subtitleData) {
+        setState(() {
+          if (subtitleData.isShowing) {
+            currentSubtitle = subtitleData.text.replaceAll('|', '\n');
+            debugPrint('[字幕] $currentSubtitle');
+          } else {
+            currentSubtitle = null;
+          }
+        });
       });
       devices = Devices.all;
       Equalizer equalizer = Equalizer.createMode(EqualizerMode.live);
@@ -123,7 +135,79 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                 volumeActiveColor: Colors.blue,
                 showControls: !isPhone,
               ),
-            )
+            ),
+            // 实时字幕显示框
+            Card(
+              elevation: 4.0,
+              color: Colors.black87,
+              child: Container(
+                width: isPhone ? 320 : 400,
+                height: isPhone ? 180 : 360,
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: const [
+                        Icon(Icons.closed_caption, color: Colors.white, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          '实时字幕',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Divider(color: Colors.white54, height: 20),
+                    Expanded(
+                      child: currentSubtitle != null
+                          ? Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade900,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: SingleChildScrollView(
+                                child: Text(
+                                  currentSubtitle!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    height: 1.6,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.subtitles_off,
+                                    color: Colors.white38,
+                                    size: 64,
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    '等待字幕中...\n请启用字幕轨道',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
         Row(
