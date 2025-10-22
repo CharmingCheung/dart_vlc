@@ -88,6 +88,11 @@ void PlayerCreate(int32_t id, int32_t video_width, int32_t video_height,
       });
   player->SetErrorCallback(
       [=](std::string error) -> void { OnError(id, error.c_str()); });
+  player->SetSubtitleCallback(
+      [=](bool is_showing, const std::string& text, int64_t start_ms,
+          int64_t stop_ms, int64_t current_ms) {
+        OnSubtitle(id, is_showing, text, start_ms, stop_ms, current_ms);
+      });
 }
 
 void PlayerDispose(int32_t id) { g_players->Dispose(id); }

@@ -151,6 +151,10 @@ class Player {
 
   void SetErrorCallback(std::function<void(std::string)> callback);
 
+  void SetSubtitleCallback(
+      std::function<void(bool, const std::string&, int64_t, int64_t, int64_t)>
+          callback);
+
   ~Player();
 
  private:
@@ -176,6 +180,11 @@ class Player {
   void* OnVideoLockCallback(void** planes);
 
   void OnVideoPictureCallback(void* picture);
+  static void SubtitleCallbackThunk(void* opaque, bool visible,
+                                    const char* text,
+                                    libvlc_time_t start,
+                                    libvlc_time_t stop,
+                                    libvlc_time_t timestamp);
 
   VLC::Instance vlc_instance_;
   VLC::MediaPlayer vlc_media_player_;
@@ -205,6 +214,8 @@ class Player {
   std::function<void(float)> volume_callback_ = nullptr;
   std::function<void(float)> rate_callback_ = nullptr;
   std::function<void(uint8_t*, int32_t, int32_t)> video_callback_ = nullptr;
+  std::function<void(bool, const std::string&, int64_t, int64_t, int64_t)>
+      subtitle_callback_ = nullptr;
 };
 
 #endif  // PLAYER_PLAYER_H_

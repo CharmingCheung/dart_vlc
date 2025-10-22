@@ -65,6 +65,12 @@ class Player {
   /// Stream to listen to volume & rate state of the [Player] instance.
   late Stream<GeneralState> generalStream;
 
+  /// Subtitle state of the [Player] instance.
+  SubtitleState subtitle = SubtitleState();
+
+  /// Stream to listen to subtitle updates.
+  late Stream<SubtitleState> subtitleStream;
+
   /// Explicit video dimensions according to which the pixel buffer will be retrieved & rendered inside the [Video] widget.
   VideoDimensions? preferredVideoDimensions;
 
@@ -109,6 +115,8 @@ class Player {
     playbackStream = playbackController.stream;
     generalController = StreamController<GeneralState>.broadcast();
     generalStream = generalController.stream;
+    subtitleController = StreamController<SubtitleState>.broadcast();
+    subtitleStream = subtitleController.stream;
     bufferingProgressController = StreamController<double>.broadcast();
     bufferingProgressStream = bufferingProgressController.stream;
     errorController = StreamController<String>.broadcast();
@@ -530,6 +538,7 @@ class Player {
     positionController.close();
     playbackController.close();
     generalController.close();
+    subtitleController.close();
     videoDimensionsController.close();
     bufferingProgressController.close();
     errorController.close();
@@ -544,4 +553,5 @@ class Player {
   late StreamController<VideoDimensions> videoDimensionsController;
   late StreamController<double> bufferingProgressController;
   late StreamController<String> errorController;
+  late StreamController<SubtitleState> subtitleController;
 }

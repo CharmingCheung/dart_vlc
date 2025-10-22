@@ -23,6 +23,7 @@
 #include "api/dart_manager.h"
 #include "core.h"
 #include "dart_api_dl.h"
+#include <string>
 
 #ifdef __cplusplus
 extern "C" {
@@ -161,6 +162,47 @@ inline void OnRate(int32_t id, PlayerState* state) {
   Dart_CObject return_object;
   return_object.type = Dart_CObject_kArray;
   return_object.value.as_array.length = 3;
+  return_object.value.as_array.values = value_objects;
+  g_dart_post_C_object(g_callback_port, &return_object);
+}
+
+inline void OnSubtitle(int32_t id, bool is_showing, const std::string& text,
+                       int64_t start_ms, int64_t stop_ms, int64_t current_ms) {
+  Dart_CObject id_object;
+  id_object.type = Dart_CObject_kInt32;
+  id_object.value.as_int32 = id;
+
+  Dart_CObject type_object;
+  type_object.type = Dart_CObject_kString;
+  type_object.value.as_string = const_cast<char*>("subtitleEvent");
+
+  Dart_CObject visible_object;
+  visible_object.type = Dart_CObject_kBool;
+  visible_object.value.as_bool = is_showing;
+
+  Dart_CObject text_object;
+  text_object.type = Dart_CObject_kString;
+  text_object.value.as_string = const_cast<char*>(text.c_str());
+
+  Dart_CObject start_object;
+  start_object.type = Dart_CObject_kInt64;
+  start_object.value.as_int64 = start_ms;
+
+  Dart_CObject stop_object;
+  stop_object.type = Dart_CObject_kInt64;
+  stop_object.value.as_int64 = stop_ms;
+
+  Dart_CObject current_object;
+  current_object.type = Dart_CObject_kInt64;
+  current_object.value.as_int64 = current_ms;
+
+  Dart_CObject* value_objects[] = {&id_object, &type_object, &visible_object,
+                                   &text_object, &start_object, &stop_object,
+                                   &current_object};
+
+  Dart_CObject return_object;
+  return_object.type = Dart_CObject_kArray;
+  return_object.value.as_array.length = 7;
   return_object.value.as_array.values = value_objects;
   g_dart_post_C_object(g_callback_port, &return_object);
 }

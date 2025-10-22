@@ -44,3 +44,21 @@ class GeneralState {
   /// Rate of playback of [Player] instance.
   double rate = 1.0;
 }
+
+/// Subtitle state of a [Player] instance.
+class SubtitleState {
+  /// Whether the current subtitle should be visible.
+  bool isShowing = false;
+
+  /// Subtitle payload rendered for the current frame.
+  String text = '';
+
+  /// Start time in playback timeline.
+  Duration? start = Duration.zero;
+
+  /// Stop time in playback timeline.
+  Duration? stop = Duration.zero;
+
+  /// Timestamp at which the event was emitted.
+  Duration? timestamp = Duration.zero;
+}

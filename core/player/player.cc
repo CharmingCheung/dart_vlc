@@ -20,6 +20,7 @@
 
 #include <functional>
 #include <sstream>
+#include <vlc/libvlc_media_player.h>
 
 Player::Player(const std::vector<std::string>& cmd_arguments) {
 
@@ -403,6 +404,21 @@ void Player::SetErrorCallback(std::function<void(std::string)> callback) {
   });
 }
 
+void Player::SetSubtitleCallback(
+    std::function<void(bool, const std::string&, int64_t, int64_t, int64_t)>
+        callback) {
+  subtitle_callback_ = std::move(callback);
+  libvlc_media_player_t* raw_player = vlc_media_player_.get();
+  if (raw_player == nullptr) return;
+
+  if (subtitle_callback_) {
+    libvlc_media_player_set_subtitle_callback(
+        raw_player, &Player::SubtitleCallbackThunk, this);
+  } else {
+    libvlc_media_player_set_subtitle_callback(raw_player, nullptr, nullptr);
+  }
+}
+
 void Player::OnPlaylistCallback() {
   if (is_playlist_modified_) {
     vlc_media_list_player_.setMediaList(vlc_media_list_);
@@ -509,6 +525,19 @@ void Player::OnVideoPictureCallback(void* picture) {
   }
 }
 
+void Player::SubtitleCallbackThunk(void* opaque, bool visible,
+                                   const char* text, libvlc_time_t start,
+                                   libvlc_time_t stop,
+                                   libvlc_time_t timestamp) {
+  auto* self = static_cast<Player*>(opaque);
+  if (!self || !self->subtitle_callback_) return;
+
+  std::string payload = text ? std::string(text) : std::string();
+  self->subtitle_callback_(visible, payload, static_cast<int64_t>(start),
+                           static_cast<int64_t>(stop),
+                           static_cast<int64_t>(timestamp));
+}
+
 // Helper function to convert libvlc_track_description_t list to JSON string
 std::string TrackDescriptionToJson(libvlc_track_description_t* track_desc) {
   std::ostringstream json;
@@ -587,4 +616,10 @@ void Player::SetSubtitleTrack(int32_t track) {
   libvlc_video_set_spu(vlc_media_player_, track);
 }
 
-Player::~Player() { vlc_media_player_.stop(); }
+Player::~Player() {
+  libvlc_media_player_t* raw_player = vlc_media_player_.get();
+  if (raw_player != nullptr) {
+    libvlc_media_player_set_subtitle_callback(raw_player, nullptr, nullptr);
+  }
+  vlc_media_player_.stop();
+}

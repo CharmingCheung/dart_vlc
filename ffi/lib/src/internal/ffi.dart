@@ -276,6 +276,19 @@ final ReceivePort receiver = ReceivePort()
           }
           break;
         }
+      case 'subtitleEvent':
+        {
+          final player = players[id]!;
+          player.subtitle.isShowing = event[2];
+          player.subtitle.text = event[3] ?? '';
+          player.subtitle.start = Duration(milliseconds: event[4]);
+          player.subtitle.stop = Duration(milliseconds: event[5]);
+          player.subtitle.timestamp = Duration(milliseconds: event[6]);
+          if (!player.subtitleController.isClosed) {
+            player.subtitleController.add(player.subtitle);
+          }
+          break;
+        }
       case 'openEvent':
         {
           players[id]!.current.index = event[2];
