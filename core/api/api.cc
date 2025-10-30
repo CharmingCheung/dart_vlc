@@ -427,6 +427,16 @@ int32_t PlayerGetSubtitleTrackCount(int32_t id) {
   return player->GetSubtitleTrackCount();
 }
 
+void PlayerPrintSubtitleTrackDescriptions(int32_t id) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  player->PrintSubtitleTrackDescriptions();
+}
+
 void PlayerSetHWND(int32_t id, int64_t hwnd) {
   auto player = g_players->Get(id);
   if (!player) {

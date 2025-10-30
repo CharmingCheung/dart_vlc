@@ -81,5 +81,7 @@ typedef PlayerGetSubtitleTrackCXX = Int32 Function(Int32 id);
 typedef PlayerGetSubtitleTrackDart = int Function(int id);
 typedef PlayerGetSubtitleTrackCountCXX = Int32 Function(Int32 id);
 typedef PlayerGetSubtitleTrackCountDart = int Function(int id);
+typedef PlayerPrintSubtitleTrackDescriptionsCXX = Void Function(Int32 id);
+typedef PlayerPrintSubtitleTrackDescriptionsDart = void Function(int id);
 typedef PlayerSetHWNDCXX = Int32 Function(Int32 id, Int64 hwnd);
 typedef PlayerSetHWNDDart = int Function(int id, int hwnd);

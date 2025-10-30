@@ -105,6 +105,7 @@ class Player {
   void SetSubtitleTrack(int32_t track);
   int32_t GetSubtitleTrack();
   int32_t GetSubtitleTrackCount();
+  void PrintSubtitleTrackDescriptions(); // Debug: print all track IDs
 
   void SetHWND(int64_t hwnd);
 

@@ -112,6 +112,7 @@ DLLEXPORT int32_t PlayerGetVideoTrackCount(int32_t id);
 DLLEXPORT void PlayerSetSubtitleTrack(int32_t id, int32_t track);
 DLLEXPORT int32_t PlayerGetSubtitleTrack(int32_t id);
 DLLEXPORT int32_t PlayerGetSubtitleTrackCount(int32_t id);
+DLLEXPORT void PlayerPrintSubtitleTrackDescriptions(int32_t id);
 
 DLLEXPORT void PlayerSetHWND(int32_t id, int64_t hwnd);
 

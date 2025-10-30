@@ -297,6 +297,28 @@ int32_t Player::GetSubtitleTrackCount() {
   return libvlc_video_get_spu_count(vlc_media_player_);
 }
 
+void Player::PrintSubtitleTrackDescriptions() {
+  libvlc_track_description_t* tracks = libvlc_video_get_spu_description(vlc_media_player_);
+  if (!tracks) {
+    std::cout << "[VLC] No subtitle tracks available" << std::endl;
+    return;
+  }
+
+  std::cout << "[VLC] ======== Subtitle Tracks ========" << std::endl;
+  libvlc_track_description_t* current = tracks;
+  int index = 0;
+  while (current) {
+    std::cout << "[VLC] Track " << index << ": ID=" << current->i_id
+              << ", Name=" << (current->psz_name ? current->psz_name : "null")
+              << std::endl;
+    current = current->p_next;
+    index++;
+  }
+  std::cout << "[VLC] ===================================" << std::endl;
+
+  libvlc_track_description_list_release(tracks);
+}
+
 void Player::SetHWND(int64_t hwnd) {
   vlc_media_player_.setHwnd(reinterpret_cast<void*>(hwnd));
 }
