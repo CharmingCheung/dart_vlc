@@ -91,20 +91,9 @@ class Player {
 
   void SetVideoHeight(int32_t height);
 
-  // Audio track methods
   void SetAudioTrack(int32_t track);
-  int32_t GetAudioTrack();
+
   int32_t GetAudioTrackCount();
-
-  // Video track methods
-  void SetVideoTrack(int32_t track);
-  int32_t GetVideoTrack();
-  int32_t GetVideoTrackCount();
-
-  // Subtitle track methods
-  void SetSubtitleTrack(int32_t track);
-  int32_t GetSubtitleTrack();
-  int32_t GetSubtitleTrackCount();
 
   void SetHWND(int64_t hwnd);
 

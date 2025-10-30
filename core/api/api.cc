@@ -334,7 +334,6 @@ void PlayerTakeSnapshot(int32_t id, const char* file_path, int32_t width,
   player->TakeSnapshot(file_path, width, height);
 }
 
-// Audio track methods
 void PlayerSetAudioTrack(int32_t id, int32_t track) {
   auto player = g_players->Get(id);
   if (!player) {
@@ -345,16 +344,6 @@ void PlayerSetAudioTrack(int32_t id, int32_t track) {
   player->SetAudioTrack(track);
 }
 
-int32_t PlayerGetAudioTrack(int32_t id) {
-  auto player = g_players->Get(id);
-  if (!player) {
-    g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
-    player = g_players->Get(id);
-  }
-  return player->GetAudioTrack();
-}
-
 int32_t PlayerGetAudioTrackCount(int32_t id) {
   auto player = g_players->Get(id);
   if (!player) {
@@ -363,68 +352,6 @@ int32_t PlayerGetAudioTrackCount(int32_t id) {
     player = g_players->Get(id);
   }
   return player->GetAudioTrackCount();
-}
-
-// Video track methods
-void PlayerSetVideoTrack(int32_t id, int32_t track) {
-  auto player = g_players->Get(id);
-  if (!player) {
-    g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
-    player = g_players->Get(id);
-  }
-  player->SetVideoTrack(track);
-}
-
-int32_t PlayerGetVideoTrack(int32_t id) {
-  auto player = g_players->Get(id);
-  if (!player) {
-    g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
-    player = g_players->Get(id);
-  }
-  return player->GetVideoTrack();
-}
-
-int32_t PlayerGetVideoTrackCount(int32_t id) {
-  auto player = g_players->Get(id);
-  if (!player) {
-    g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
-    player = g_players->Get(id);
-  }
-  return player->GetVideoTrackCount();
-}
-
-// Subtitle track methods
-void PlayerSetSubtitleTrack(int32_t id, int32_t track) {
-  auto player = g_players->Get(id);
-  if (!player) {
-    g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
-    player = g_players->Get(id);
-  }
-  player->SetSubtitleTrack(track);
-}
-
-int32_t PlayerGetSubtitleTrack(int32_t id) {
-  auto player = g_players->Get(id);
-  if (!player) {
-    g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
-    player = g_players->Get(id);
-  }
-  return player->GetSubtitleTrack();
-}
-
-int32_t PlayerGetSubtitleTrackCount(int32_t id) {
-  auto player = g_players->Get(id);
-  if (!player) {
-    g_players->Create(
-        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
-    player = g_players->Get(id);
-  }
-  return player->GetSubtitleTrackCount();
 }
 
 void PlayerSetHWND(int32_t id, int64_t hwnd) {
