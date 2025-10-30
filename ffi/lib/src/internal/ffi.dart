@@ -145,11 +145,6 @@ abstract class PlayerFFI {
           'PlayerGetSubtitleTrackCount')
       .asFunction();
 
-  static final PlayerPrintSubtitleTrackDescriptionsDart printSubtitleTrackDescriptions = dynamicLibrary
-      .lookup<NativeFunction<PlayerPrintSubtitleTrackDescriptionsCXX>>(
-          'PlayerPrintSubtitleTrackDescriptions')
-      .asFunction();
-
   static final PlayerSetHWNDDart setHWND = dynamicLibrary
       .lookup<NativeFunction<PlayerSetHWNDCXX>>('PlayerSetHWND')
       .asFunction();

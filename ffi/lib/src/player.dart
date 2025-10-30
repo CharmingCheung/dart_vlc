@@ -448,11 +448,6 @@ class Player {
     return count > 1 ? count - 1 : count;
   }
 
-  /// Debug: Print all subtitle track IDs to console
-  void printSubtitleTrackDescriptions() {
-    PlayerFFI.printSubtitleTrackDescriptions(id);
-  }
-
   void setHWND(int hwnd) {
     PlayerFFI.setHWND(id, hwnd);
   }
