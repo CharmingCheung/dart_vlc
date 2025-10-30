@@ -258,12 +258,43 @@ void Player::SetVideoHeight(int32_t height) {
   preferred_video_height_ = height;
 }
 
+// Audio track methods
 void Player::SetAudioTrack(int32_t track) {
   vlc_media_player_.setAudioTrack(track);
 }
 
+int32_t Player::GetAudioTrack() {
+  return libvlc_audio_get_track(vlc_media_player_);
+}
+
 int32_t Player::GetAudioTrackCount() {
   return vlc_media_player_.audioTrackCount();
+}
+
+// Video track methods
+void Player::SetVideoTrack(int32_t track) {
+  libvlc_video_set_track(vlc_media_player_, track);
+}
+
+int32_t Player::GetVideoTrack() {
+  return libvlc_video_get_track(vlc_media_player_);
+}
+
+int32_t Player::GetVideoTrackCount() {
+  return libvlc_video_get_track_count(vlc_media_player_);
+}
+
+// Subtitle track methods
+void Player::SetSubtitleTrack(int32_t track) {
+  libvlc_video_set_spu(vlc_media_player_, track);
+}
+
+int32_t Player::GetSubtitleTrack() {
+  return libvlc_video_get_spu(vlc_media_player_);
+}
+
+int32_t Player::GetSubtitleTrackCount() {
+  return libvlc_video_get_spu_count(vlc_media_player_);
 }
 
 void Player::SetHWND(int64_t hwnd) {

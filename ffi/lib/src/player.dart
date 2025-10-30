@@ -403,11 +403,48 @@ class Player {
     return PlayerFFI.setAudioTrack(id, track);
   }
 
+  /// Gets current audio track from current [MediaSource]
+  int get audioTrack {
+    return PlayerFFI.getAudioTrack(id);
+  }
+
   /// Gets audio track count from current [MediaSource]
   int get audioTrackCount {
     int count = PlayerFFI.getAudioTrackCount(id);
     // for some reason this value returns 0 when no tracks exists
     // and 2 or more if there's 1 or more audio tracks for this [MediaSource].
+    return count > 1 ? count - 1 : count;
+  }
+
+  /// Sets Current Video Track for the current [MediaSource]
+  void setVideoTrack(int track) {
+    return PlayerFFI.setVideoTrack(id, track);
+  }
+
+  /// Gets current video track from current [MediaSource]
+  int get videoTrack {
+    return PlayerFFI.getVideoTrack(id);
+  }
+
+  /// Gets video track count from current [MediaSource]
+  int get videoTrackCount {
+    int count = PlayerFFI.getVideoTrackCount(id);
+    return count > 1 ? count - 1 : count;
+  }
+
+  /// Sets Current Subtitle Track for the current [MediaSource]
+  void setSubtitleTrack(int track) {
+    return PlayerFFI.setSubtitleTrack(id, track);
+  }
+
+  /// Gets current subtitle track from current [MediaSource]
+  int get subtitleTrack {
+    return PlayerFFI.getSubtitleTrack(id);
+  }
+
+  /// Gets subtitle track count from current [MediaSource]
+  int get subtitleTrackCount {
+    int count = PlayerFFI.getSubtitleTrackCount(id);
     return count > 1 ? count - 1 : count;
   }
 

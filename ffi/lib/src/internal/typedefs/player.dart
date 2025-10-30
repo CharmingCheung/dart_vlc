@@ -58,9 +58,28 @@ typedef PlayerTakeSnapshotCXX = Void Function(
     Int32 id, Pointer<Utf8> filePath, Int32 width, Int32 height);
 typedef PlayerTakeSnapshotDart = void Function(
     int id, Pointer<Utf8> filePath, int width, int height);
-typedef PlayerSetAudioTrackCXX = Void Function(Int32 id, Int32 index);
-typedef PlayerSetAudioTrackDart = void Function(int id, int index);
+// Audio track typedefs
+typedef PlayerSetAudioTrackCXX = Void Function(Int32 id, Int32 track);
+typedef PlayerSetAudioTrackDart = void Function(int id, int track);
+typedef PlayerGetAudioTrackCXX = Int32 Function(Int32 id);
+typedef PlayerGetAudioTrackDart = int Function(int id);
 typedef PlayerGetAudioTrackCountCXX = Int32 Function(Int32 id);
 typedef PlayerGetAudioTrackCountDart = int Function(int id);
+
+// Video track typedefs
+typedef PlayerSetVideoTrackCXX = Void Function(Int32 id, Int32 track);
+typedef PlayerSetVideoTrackDart = void Function(int id, int track);
+typedef PlayerGetVideoTrackCXX = Int32 Function(Int32 id);
+typedef PlayerGetVideoTrackDart = int Function(int id);
+typedef PlayerGetVideoTrackCountCXX = Int32 Function(Int32 id);
+typedef PlayerGetVideoTrackCountDart = int Function(int id);
+
+// Subtitle track typedefs
+typedef PlayerSetSubtitleTrackCXX = Void Function(Int32 id, Int32 track);
+typedef PlayerSetSubtitleTrackDart = void Function(int id, int track);
+typedef PlayerGetSubtitleTrackCXX = Int32 Function(Int32 id);
+typedef PlayerGetSubtitleTrackDart = int Function(int id);
+typedef PlayerGetSubtitleTrackCountCXX = Int32 Function(Int32 id);
+typedef PlayerGetSubtitleTrackCountDart = int Function(int id);
 typedef PlayerSetHWNDCXX = Int32 Function(Int32 id, Int64 hwnd);
 typedef PlayerSetHWNDDart = int Function(int id, int hwnd);

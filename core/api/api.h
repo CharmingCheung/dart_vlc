@@ -98,9 +98,20 @@ DLLEXPORT void PlayerMove(int32_t id, int32_t initial_index,
 DLLEXPORT void PlayerTakeSnapshot(int32_t id, const char* file_path,
                                   int32_t width, int32_t height);
 
+// Audio track methods
 DLLEXPORT void PlayerSetAudioTrack(int32_t id, int32_t track);
-
+DLLEXPORT int32_t PlayerGetAudioTrack(int32_t id);
 DLLEXPORT int32_t PlayerGetAudioTrackCount(int32_t id);
+
+// Video track methods
+DLLEXPORT void PlayerSetVideoTrack(int32_t id, int32_t track);
+DLLEXPORT int32_t PlayerGetVideoTrack(int32_t id);
+DLLEXPORT int32_t PlayerGetVideoTrackCount(int32_t id);
+
+// Subtitle track methods
+DLLEXPORT void PlayerSetSubtitleTrack(int32_t id, int32_t track);
+DLLEXPORT int32_t PlayerGetSubtitleTrack(int32_t id);
+DLLEXPORT int32_t PlayerGetSubtitleTrackCount(int32_t id);
 
 DLLEXPORT void PlayerSetHWND(int32_t id, int64_t hwnd);
 
