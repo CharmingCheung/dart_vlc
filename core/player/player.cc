@@ -143,13 +143,13 @@ void Player::Seek(int32_t position) { vlc_media_player_.setTime(position); }
 void Player::SetVolume(float volume) {
   vlc_media_player_.setVolume(static_cast<int32_t>(volume * 100));
   state_->set_volume(volume);
-  volume_callback_(volume);
+  if (volume_callback_) volume_callback_(volume);
 }
 
 void Player::SetRate(float rate) {
   vlc_media_player_.setRate(rate);
   state_->set_rate(rate);
-  rate_callback_(rate);
+  if (rate_callback_) rate_callback_(rate);
 }
 
 void Player::SetDevice(Device device) {
@@ -299,7 +299,7 @@ void Player::SetVideoDimensionsCallback(
             video_width_ != static_cast<int32_t>(*w)) {
           video_height_ = static_cast<int32_t>(*h);
           video_width_ = static_cast<int32_t>(*w);
-          video_dimension_callback_(video_width_, video_height_);
+          if (video_dimension_callback_) video_dimension_callback_(video_width_, video_height_);
           if (preferred_video_width_.has_value() &&
               preferred_video_height_.has_value()) {
             video_width = preferred_video_width_.value_or(0);
@@ -408,7 +408,7 @@ void Player::OnPlaylistCallback() {
     if (state_->index() > vlc_media_list_.count())
       state_->set_index(vlc_media_list_.count() - 1);
     is_playlist_modified_ = false;
-    playlist_callback_();
+    if (playlist_callback_) playlist_callback_();
   };
 }
 
@@ -425,7 +425,7 @@ void Player::OnOpenCallback(VLC::MediaPtr vlc_media_ptr) {
     state_->set_duration(0);
   }
   state_->set_index(vlc_media_list_.indexOfItem(*vlc_media_ptr.get()));
-  open_callback_(*vlc_media_ptr.get());
+  if (open_callback_) open_callback_(*vlc_media_ptr.get());
 }
 
 void Player::OnPlayCallback() {
@@ -436,7 +436,7 @@ void Player::OnPlayCallback() {
     state_->set_position(position());
     state_->set_duration(duration());
   }
-  play_callback_();
+  if (play_callback_) play_callback_();
 }
 
 void Player::OnPauseCallback() {
@@ -446,7 +446,7 @@ void Player::OnPauseCallback() {
     state_->set_position(position());
     state_->set_duration(duration());
   }
-  pause_callback_();
+  if (pause_callback_) pause_callback_();
 }
 
 void Player::OnStopCallback() {
@@ -454,7 +454,7 @@ void Player::OnStopCallback() {
   state_->set_is_valid(vlc_media_player_.isValid());
   state_->set_position(0);
   state_->set_duration(0);
-  stop_callback_();
+  if (stop_callback_) stop_callback_();
 }
 
 void Player::OnPositionCallback(float relative_position) {
@@ -464,14 +464,14 @@ void Player::OnPositionCallback(float relative_position) {
     state_->set_position(position());
     state_->set_duration(duration());
   }
-  position_callback_(
+  if (position_callback_) position_callback_(
       static_cast<int32_t>(relative_position * vlc_media_player_.length()));
 }
 
 void Player::OnSeekableCallback(bool is_seekable) {
   if (duration() > 0) {
     state_->set_is_seekable(is_seekable);
-    seekable_callback_(is_seekable);
+    if (seekable_callback_) seekable_callback_(is_seekable);
   }
 }
 
@@ -483,7 +483,7 @@ void Player::OnCompleteCallback() {
     state_->set_position(position());
     state_->set_duration(duration());
     OnPlaylistCallback();
-    complete_callback_();
+    if (complete_callback_) complete_callback_();
   } else {
     state_->set_position(0);
     state_->set_duration(0);
@@ -581,4 +581,21 @@ void Player::SetSubtitleTrack(int32_t track) {
   libvlc_video_set_spu(vlc_media_player_, track);
 }
 
-Player::~Player() { vlc_media_player_.stop(); }
+Player::~Player() {
+  // Clear all callbacks before stopping to prevent calling into Dart
+  // during cleanup when the Dart VM may already be shutting down
+  playlist_callback_ = nullptr;
+  open_callback_ = nullptr;
+  video_dimension_callback_ = nullptr;
+  play_callback_ = nullptr;
+  pause_callback_ = nullptr;
+  stop_callback_ = nullptr;
+  position_callback_ = nullptr;
+  seekable_callback_ = nullptr;
+  complete_callback_ = nullptr;
+  volume_callback_ = nullptr;
+  rate_callback_ = nullptr;
+  video_callback_ = nullptr;
+
+  vlc_media_player_.stop();
+}
