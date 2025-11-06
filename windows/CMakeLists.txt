@@ -41,7 +41,11 @@ set_target_properties(
 target_compile_definitions(
   "${PLUGIN_NAME}" PRIVATE
   FLUTTER_PLUGIN_IMPL
+  _SSIZE_T_DEFINED  # Fix ssize_t redefinition error on Windows
 )
+
+# Force-include ssize_t fix header before any VLC headers
+target_compile_options("${PLUGIN_NAME}" PRIVATE /FI"${CMAKE_CURRENT_SOURCE_DIR}/ssize_t_fix.h")
 
 target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include"

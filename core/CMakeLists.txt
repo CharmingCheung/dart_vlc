@@ -121,6 +121,10 @@ target_include_directories(${LIBRARY_NAME} INTERFACE
 # Windows
 if(WIN32)
   set_target_properties(${LIBRARY_NAME} PROPERTIES CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+  # Fix ssize_t redefinition error on Windows
+  target_compile_definitions(${LIBRARY_NAME} PRIVATE _SSIZE_T_DEFINED)
+  # Force-include ssize_t fix header before any VLC headers
+  target_compile_options(${LIBRARY_NAME} PRIVATE /FI"${CMAKE_CURRENT_SOURCE_DIR}/ssize_t_fix.h")
   target_link_libraries(${LIBRARY_NAME} PRIVATE
     "${LIBVLC_SOURCE}/sdk/lib/libvlc.lib"
     "${LIBVLC_SOURCE}/sdk/lib/libvlccore.lib"
