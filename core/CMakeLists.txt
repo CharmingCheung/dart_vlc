@@ -98,6 +98,15 @@ add_library(${LIBRARY_NAME} STATIC
 
 add_dependencies(${LIBRARY_NAME} LIBVLC_EXTRACT)
 
+# Patch VLC header after extraction to fix ssize_t redefinition on Windows
+if(WIN32)
+  add_custom_command(
+    TARGET LIBVLC_EXTRACT POST_BUILD
+    COMMAND powershell -ExecutionPolicy Bypass -Command "if (Test-Path '${LIBVLC_SOURCE}/sdk/include/vlc/libvlc_media.h') { (Get-Content '${LIBVLC_SOURCE}/sdk/include/vlc/libvlc_media.h' -Raw) -replace '(?m)^#if defined\\(_MSC_VER\\)\\r?\\n#include <basetsd.h>\\r?\\n typedef SSIZE_T ssize_t;\\r?\\n#endif', '#if defined(_MSC_VER) `&`& !defined(_SSIZE_T_DEFINED)`r`n#include <basetsd.h>`r`ntypedef SSIZE_T ssize_t;`r`n#define _SSIZE_T_DEFINED`r`n#endif' | Set-Content '${LIBVLC_SOURCE}/sdk/include/vlc/libvlc_media.h' -NoNewline }"
+    COMMENT "Patching VLC header for ssize_t compatibility"
+  )
+endif()
+
 set_target_properties(${LIBRARY_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 target_include_directories(${LIBRARY_NAME} PRIVATE
